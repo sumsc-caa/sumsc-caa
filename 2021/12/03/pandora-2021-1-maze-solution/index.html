@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>2021 魔盒挑战第一期-网页迷宫篇 解题流程与说明 | SUMSC</title>
+  <meta name="description" content="Level 00 略。  Level 01 | HelloMaze.html 用鼠标选中色块中的文字即可，得到答案eA5JlOGrq0AFEPy6IJT。  Level 010 | eA5JlOGrq0AFEPy6IJT.html 根据提示打开审查元素，在元素&#x2F;Inspector一栏用元素选择器选择带边框的div，展开标签看到hiddentext：UDZvYvFch，即为答案。  Level 0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021 魔盒挑战第一期-网页迷宫篇 解题流程与说明">
+<meta property="og:url" content="https://sumsc-caa.github.io/2021/12/03/pandora-2021-1-maze-solution/index.html">
+<meta property="og:site_name" content="SUMSC">
+<meta property="og:description" content="Level 00 略。  Level 01 | HelloMaze.html 用鼠标选中色块中的文字即可，得到答案eA5JlOGrq0AFEPy6IJT。  Level 010 | eA5JlOGrq0AFEPy6IJT.html 根据提示打开审查元素，在元素&#x2F;Inspector一栏用元素选择器选择带边框的div，展开标签看到hiddentext：UDZvYvFch，即为答案。  Level 0">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/pandora/output.jpg">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/pandora/showimg.png">
+<meta property="article:published_time" content="2021-12-03T02:44:25.000Z">
+<meta property="article:modified_time" content="2022-11-01T03:24:16.583Z">
+<meta property="article:author" content="SUMSC">
+<meta property="article:tag" content="Pandora">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sumsc-caa.github.io/img/pandora/output.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sumsc-caa.github.io/2021/12/03/pandora-2021-1-maze-solution/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="SUMSC" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="//github.com/sumsc-caa" target="_blank">
+          <img class="img-circle img-rotate" src="/img/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">苏州大学计算机爱好者协会（微软学生俱乐部）</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">微软开源学习社群联络社团</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Suzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-blog">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">
+            
+            <span class="menu-title">技术博客</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-activity">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8">
+            
+            <span class="menu-title">活动</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-github">
+          <a target="_blank" rel="noopener" href="//github.com/sumsc-caa">
+            
+            <span class="menu-title">GitHub</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <span class="menu-title">友情链接</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <span class="menu-title">关于我们</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <div><p>这里是苏州大学计算机爱好者协会（微软学生俱乐部），在这里，你可以看到关于我们的信息以及我们最近的动态。</p><p>欢迎交流与分享经验!</p></div><hr/> <div style="line-height:30px;"> <!-- <h4>🔥 最新活动</h4><div> <div style="line-height:26px;"><p>号外号外！苏州大学计算机爱好者协会<a href="/2022/06/05/hackathon2022-online/" target="_blank">2022“Hackathon：Online”</a>来啦！ <em><a href="https://mp.weixin.qq.com/s/YI0Bjhai6vb4BMhXu6cGUg" target="_blank">活动推送传送门</a></em> <p>本次Hackathon的形式不同以往，将以线上的方式进行。本次活动将在6月5日~6月12日展开，历时7天，给予各位同学更充足的时间和更灵活的安排来呈现出一个创意满满的作品！</p> </p><p>本次Hackathon以“聊天机器人”为主题，在6月5日将由主持人为大家介绍本次Hackathon的题目，并进行相关技术的教学。比赛期间也会有相关技术成员在群内为大家答疑解惑。在比赛进程的最后一天，将由各小组成员展示自己的精彩作品，还有丰富奖品等你来拿！ </p><p>还在犹豫什么？快加入QQ群488140447，在头脑风暴中挑战自我吧！<p></div><hr/> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a><span class="category-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hackathon/" style="font-size: 13.67px;">Hackathon</a> <a href="/tags/Pandora/" style="font-size: 13.33px;">Pandora</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13px;">前端</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-2/" class="title">2022 Hackathon: 字符画与康威生命游戏</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-asciiart/" class="title">2022 Hackathon: 字符画 示例程序与帮助</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:02.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-gameoflife/" class="title">2022 Hackathon: 康威生命游戏 示例程序与使用说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:01.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/18/techpost-2022-1/" class="title">技术赋能#1：python的可迭代对象、迭代器与生成器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-18T04:23:48.000Z" itemprop="datePublished">2022-10-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/06/05/hackathon2022-online/" class="title">2022 Hackathon Online</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-06-05T04:00:00.000Z" itemprop="datePublished">2022-06-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-pandora-2021-1-maze-solution" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2021 魔盒挑战第一期-网页迷宫篇 解题流程与说明
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/12/03/pandora-2021-1-maze-solution/" class="article-date">
+	  <time datetime="2021-12-03T02:44:25.000Z" itemprop="datePublished">2021-12-03</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Pandora/" rel="tag">Pandora</a>, <a class="article-tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/12/03/pandora-2021-1-maze-solution/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 3.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 15(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="level-00"><a class="markdownIt-Anchor" href="#level-00"></a> Level 00</h2>
+<p>略。</p>
+<h2 id="level-01-hellomazehtml"><a class="markdownIt-Anchor" href="#level-01-hellomazehtml"></a> Level 01 | HelloMaze.html</h2>
+<p>用鼠标选中色块中的文字即可，得到答案<code>eA5JlOGrq0AFEPy6IJT</code>。</p>
+<h2 id="level-010-ea5jlogrq0afepy6ijthtml"><a class="markdownIt-Anchor" href="#level-010-ea5jlogrq0afepy6ijthtml"></a> Level 010 | eA5JlOGrq0AFEPy6IJT.html</h2>
+<p>根据提示打开审查元素，在元素/Inspector一栏用元素选择器选择带边框的div，展开标签看到hiddentext：<code>UDZvYvFch</code>，即为答案。</p>
+<h2 id="level-011-udzvyvfchhtml"><a class="markdownIt-Anchor" href="#level-011-udzvyvfchhtml"></a> Level 011 | UDZvYvFch.html</h2>
+<p>根据提示打开审查元素的控制台，此时点击按钮可以看到控制台输出<code>EiuOOcxCOKzEyXLL</code>，即为答案。</p>
+<h2 id="level-0100-eiuoocxcokzeyxllhtml"><a class="markdownIt-Anchor" href="#level-0100-eiuoocxcokzeyxllhtml"></a> Level 0100 | EiuOOcxCOKzEyXLL.html</h2>
+<h3 id="method-1"><a class="markdownIt-Anchor" href="#method-1"></a> Method 1</h3>
+<p>根据提示打开审查元素的控制台，输入指令<code>answer</code>或<code>console.log(answer)</code>即可看到答案：<code>rMhsaAmoDVeRXBcdoN</code>。</p>
+<h3 id="method-2"><a class="markdownIt-Anchor" href="#method-2"></a> Method 2</h3>
+<p>在审查元素的元素一栏中查找script标签，看到</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="keyword">var</span> answer=<span class="string">&quot;rMhsaAmoDVeRXBcdoN&quot;</span> </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>一行，说明answer的值为<code>rMhsaAmoDVeRXBcdoN</code>。</p>
+<h2 id="level-0101-rmhsaamodverxbcdonhtml"><a class="markdownIt-Anchor" href="#level-0101-rmhsaamodverxbcdonhtml"></a> Level 0101 | rMhsaAmoDVeRXBcdoN.html</h2>
+<p>按照题目要求写出程序并运行即可得到答案。两个样例程序如下：</p>
+<h3 id="python"><a class="markdownIt-Anchor" href="#python"></a> python</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">proc</span>(<span class="params">st</span>):</span><br><span class="line">    nums = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="built_in">ord</span>, st))</span><br><span class="line">    avg = <span class="built_in">sum</span>(nums)/<span class="built_in">len</span>(nums)</span><br><span class="line">    var = <span class="built_in">sum</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, nums))/<span class="built_in">len</span>(nums)-avg**<span class="number">2</span></span><br><span class="line">    avg, var = math.ceil(avg), math.ceil(var)</span><br><span class="line">    <span class="keyword">return</span> avg, var</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">proc2</span>(<span class="params">num</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span>(<span class="number">48</span> &lt;= num &lt;= <span class="number">57</span> <span class="keyword">or</span> <span class="number">65</span> &lt;= num &lt;= <span class="number">90</span> <span class="keyword">or</span> <span class="number">97</span> &lt;= num &lt;= <span class="number">122</span>):</span><br><span class="line">        num = (num+<span class="number">7</span>) % <span class="number">129</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">chr</span>(num)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">lst = [</span><br><span class="line">    <span class="string">&quot;HelloMaze&quot;</span>,</span><br><span class="line">    <span class="string">&quot;eA5JlOGrq0AFEPy6IJT&quot;</span>,</span><br><span class="line">    <span class="string">&quot;UDZvYvFch&quot;</span>,</span><br><span class="line">    <span class="string">&quot;EiuOOcxCOKzEyXLL&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rMhsaAmoDVeRXBcdoN&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([proc2(j) <span class="keyword">for</span> i <span class="keyword">in</span> lst <span class="keyword">for</span> j <span class="keyword">in</span> proc(i)]))</span><br></pre></td></tr></table></figure>
+<h3 id="javascript"><a class="markdownIt-Anchor" href="#javascript"></a> JavaScript</h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">processNum</span>(<span class="params">n</span>)&#123;</span><br><span class="line">    n=<span class="title class_">Math</span>.<span class="title function_">ceil</span>(n)</span><br><span class="line">    <span class="keyword">while</span>(n&lt;<span class="number">48</span>|<span class="number">57</span>&lt;n&amp;n&lt;<span class="number">65</span>|<span class="number">90</span>&lt;n&amp;n&lt;<span class="number">97</span>|n&gt;<span class="number">122</span>)&#123;</span><br><span class="line">        n=(n+<span class="number">7</span>)%<span class="number">129</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">String</span>.<span class="title function_">fromCharCode</span>(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">processStr</span>(<span class="params">s</span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> sum=<span class="number">0</span>,squaredsum=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;s.<span class="property">length</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">let</span> n=s.<span class="title function_">charCodeAt</span>(i);</span><br><span class="line">        sum+=n;</span><br><span class="line">        squaredsum+=n*n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> avg=sum/s.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">let</span> variance=squaredsum/s.<span class="property">length</span>-avg*avg;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">processNum</span>(avg)+<span class="title function_">processNum</span>(variance);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> answer=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> lst=[</span><br><span class="line">    <span class="string">&quot;HelloMaze&quot;</span>,</span><br><span class="line">    <span class="string">&quot;eA5JlOGrq0AFEPy6IJT&quot;</span>,</span><br><span class="line">    <span class="string">&quot;UDZvYvFch&quot;</span>,</span><br><span class="line">    <span class="string">&quot;EiuOOcxCOKzEyXLL&quot;</span>,</span><br><span class="line">    <span class="string">&quot;rMhsaAmoDVeRXBcdoN&quot;</span></span><br><span class="line">];</span><br><span class="line">lst.<span class="title function_">forEach</span>(<span class="function">(<span class="params">value</span>)=&gt;</span>&#123;</span><br><span class="line">    answer+=<span class="title function_">processStr</span>(value);</span><br><span class="line">&#125;)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(answer);</span><br></pre></td></tr></table></figure>
+<h2 id="level-0110-dkpbe3b2d3html"><a class="markdownIt-Anchor" href="#level-0110-dkpbe3b2d3html"></a> Level 0110 | dkPBe3b2d3.html</h2>
+<p>根据提示打开审查元素，找到check的源代码（注释是后加的）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">check</span>(<span class="params">m,n,o,p</span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> ns = [m,n,o,p].<span class="title function_">sort</span>(<span class="function">(<span class="params">a,b</span>)=&gt;</span>b-a); <span class="comment">// 将[m,n,o,p]逆序排序后存入ns内，说明参数的顺序不会对影响结果</span></span><br><span class="line">    <span class="keyword">let</span> nums = [];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">2</span>; i&lt;<span class="number">5</span>; i++)&#123;              <span class="comment">// i从2到4迭代</span></span><br><span class="line">        ns.<span class="title function_">forEach</span>(<span class="function">(<span class="params">value</span>)=&gt;</span>&#123;            <span class="comment">// 对列表ns迭代</span></span><br><span class="line">            nums.<span class="title function_">push</span>(value*i);          <span class="comment">// 将value*i加到nums末尾</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">String</span>.<span class="title function_">fromCharCode</span>(...nums); <span class="comment">// 将nums转换为字符串并返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析后可知check函数负责将四个数字，m、n、o、p，倒序排序后都乘以2、3、4，将结果依次加入数组nums内。随后将nums的各项按照ascii码转换为字符串。</p>
+<p>这里再结合提示“联系上一题”，为了确保整数对应的字符是合规的答案，整数n必须满足如下约束：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>2</mn><mi>n</mi><mo separator="true">,</mo><mn>3</mn><mi>n</mi><mo separator="true">,</mo><mn>4</mn><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">Z</mi><mo>∩</mo><mo stretchy="false">{</mo><mo stretchy="false">[</mo><mn>48</mn><mo separator="true">,</mo><mn>57</mn><mo stretchy="false">]</mo><mo>∪</mo><mo stretchy="false">[</mo><mn>65</mn><mo separator="true">,</mo><mn>90</mn><mo stretchy="false">]</mo><mo>∪</mo><mo stretchy="false">[</mo><mn>97</mn><mo separator="true">,</mo><mn>122</mn><mo stretchy="false">]</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">2n,3n,4n\in \mathbb Z\cap\{[48,57]\cup[65,90]\cup[97,122]\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">3</span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">4</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68889em;vertical-align:0em;"></span><span class="mord mathbb">Z</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mopen">[</span><span class="mord">4</span><span class="mord">8</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">5</span><span class="mord">7</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">6</span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">9</span><span class="mord">0</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∪</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">9</span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">2</span><span class="mord">2</span><span class="mclose">]</span><span class="mclose">}</span></span></span></span></span></p>
+<p>即</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mn>24.25</mn><mo>=</mo><mi>max</mi><mo>⁡</mo><mo stretchy="false">{</mo><mn>24</mn><mo separator="true">,</mo><mfrac><mn>65</mn><mn>3</mn></mfrac><mo separator="true">,</mo><mfrac><mn>97</mn><mn>4</mn></mfrac><mo stretchy="false">}</mo><mo>≤</mo><mi>n</mi><mo>≤</mo><mi>min</mi><mo>⁡</mo><mo stretchy="false">{</mo><mfrac><mn>57</mn><mn>2</mn></mfrac><mo separator="true">,</mo><mfrac><mn>90</mn><mn>3</mn></mfrac><mo separator="true">,</mo><mfrac><mn>122</mn><mn>4</mn></mfrac><mo stretchy="false">}</mo><mo>=</mo><mn>28.5</mn></mrow><annotation encoding="application/x-tex">24.25=\max\{24,\frac{65}{3},\frac{97}{4}\}\leq n \leq \min\{\frac{57}{2},\frac{90}{3},\frac{122}{4}\}=28.5
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">4</span><span class="mord">.</span><span class="mord">2</span><span class="mord">5</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mop">max</span><span class="mopen">{</span><span class="mord">2</span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">6</span><span class="mord">5</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">9</span><span class="mord">7</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">}</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.00744em;vertical-align:-0.686em;"></span><span class="mop">min</span><span class="mopen">{</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">5</span><span class="mord">7</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">3</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">9</span><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mord">2</span><span class="mord">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">}</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">8</span><span class="mord">.</span><span class="mord">5</span></span></span></span></span></p>
+<p>又因为题目中规定了check的输入都是整数，所以满足条件的只有25,26,27,28四个数，共有35种情况。可以写程序穷举也可以手工穷举，不过在穷举之前应该能想到把四个数都填进去试试看，正好就能得到答案<code>8642TQNKplhd</code>。</p>
+<p>穷举程序（python）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests <span class="keyword">as</span> r   <span class="comment"># python中著名的网络请求库，需通过pip安装</span></span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>(<span class="params">*args</span>):   <span class="comment"># 页面中的check函数的复刻</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join([<span class="built_in">chr</span>(i*j) <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">5</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">sorted</span>(args, reverse=<span class="literal">True</span>)])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nums = [<span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>]</span><br><span class="line"></span><br><span class="line">conditions = (</span><br><span class="line">    (nums[i], nums[j], nums[k], nums[l])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i, <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(j, <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(k, <span class="number">4</span>)</span><br><span class="line">)  <span class="comment"># 列举所有情况</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> cond <span class="keyword">in</span> conditions:</span><br><span class="line">    answer = check(*cond)</span><br><span class="line">    url = <span class="string">f&quot;http://10.10.65.208:8080/maze/<span class="subst">&#123;answer&#125;</span>.html&quot;</span></span><br><span class="line">    response = r.get(url, timeout=<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> response.status_code == <span class="number">200</span>:  <span class="comment"># 页面存在时状态码为200</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;cond&#125;</span> =&gt; <span class="subst">&#123;url&#125;</span> exist.&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n======================&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;The answer: <span class="subst">&#123;answer&#125;</span>\nLink to next level: <span class="subst">&#123;url&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;======================\n&quot;</span>)</span><br><span class="line">    <span class="keyword">elif</span> response.status_code == <span class="number">404</span>:  <span class="comment"># 页面不存在时状态码为404</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;cond&#125;</span> =&gt; <span class="subst">&#123;url&#125;</span> not exist.&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:           <span class="comment"># 如果状态码不是上述二者说明服务器出问题或者访问过于频繁，抛出异常</span></span><br><span class="line">        <span class="keyword">raise</span> BaseException(</span><br><span class="line">            <span class="string">f&quot;unknown status code: <span class="subst">&#123;response.status_code&#125;</span> while accessing <span class="subst">&#123;url&#125;</span>.&quot;</span>)</span><br><span class="line">    sleep(<span class="number">0.5</span>)  <span class="comment"># 控制访问间隔，防止对服务器造成压力</span></span><br></pre></td></tr></table></figure>
+<h2 id="level-0111-8642tqnkplhdhtml"><a class="markdownIt-Anchor" href="#level-0111-8642tqnkplhdhtml"></a> Level 0111 | 8642TQNKplhd.html</h2>
+<p>题目中的色块共有6行8列，且只有8种颜色，结合提示猜测通关的信息可能被编码成颜色，因此先按顺序提取出色块中的所有颜色，发现颜色的rgb值中各分量只有<code>00</code>与<code>ff</code>两种值，若是将<code>00</code>记为0，将<code>ff</code>记为1，即可得到一个仅由0与1组成的二进制串：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">011100100101001000110000010100100100100101010110010110100011000101010100001110010011010101100100001101000111010001111000011100000110100101100101</span><br></pre></td></tr></table></figure>
+<p>因为<code>1 byte=8 bits</code>，所以将上述二进制串每八位分为一组，再将每组转化为十进制，得到一个长度为18的数组：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">114</span>, <span class="number">82</span>, <span class="number">48</span>, <span class="number">82</span>, <span class="number">73</span>, <span class="number">86</span>, <span class="number">90</span>, <span class="number">49</span>, <span class="number">84</span>, <span class="number">57</span>, <span class="number">53</span>, <span class="number">100</span>, <span class="number">52</span>, <span class="number">116</span>, <span class="number">120</span>, <span class="number">112</span>, <span class="number">105</span>, <span class="number">101</span>]</span><br></pre></td></tr></table></figure>
+<p>注意到数组内每个数都在128以内，猜测这可能是ascii码值，于是将数组转化为字符串，得到<code>rR0RIVZ1T95d4txpie</code>，即本题的答案。</p>
+<p>完整代码（javascript）如下（在审查元素的控制台中运行）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 用正则表达式按顺序获取table中的所有颜色</span></span><br><span class="line">    <span class="keyword">const</span> text = <span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&quot;colormatrix&quot;</span>)[<span class="number">0</span>].<span class="property">innerHTML</span>;</span><br><span class="line">    <span class="keyword">let</span> colors = [...text.<span class="title function_">matchAll</span>(<span class="regexp">/#([0-9a-f]&#123;2&#125;)([0-9a-f]&#123;2&#125;)([0-9a-f]&#123;2&#125;)/g</span>)];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转换为比特</span></span><br><span class="line">    <span class="keyword">let</span> bits = [];</span><br><span class="line">    colors.<span class="title function_">forEach</span>(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">        bits.<span class="title function_">push</span>(value[<span class="number">1</span>] === <span class="string">&quot;00&quot;</span> ? <span class="number">0</span> : <span class="number">1</span>, value[<span class="number">2</span>] === <span class="string">&quot;00&quot;</span> ? <span class="number">0</span> : <span class="number">1</span>, value[<span class="number">3</span>] === <span class="string">&quot;00&quot;</span> ? <span class="number">0</span> : <span class="number">1</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(bits);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 转换为字符串</span></span><br><span class="line">    <span class="keyword">let</span> nums = [];</span><br><span class="line">    <span class="keyword">let</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (n &lt; bits.<span class="property">length</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++, n++) &#123;</span><br><span class="line">            num = num * <span class="number">2</span> + bits[n]</span><br><span class="line">        &#125;</span><br><span class="line">        nums.<span class="title function_">push</span>(num);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> answer = <span class="title class_">String</span>.<span class="title function_">fromCharCode</span>(...nums);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出结果</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(answer);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<h2 id="level-01000-rr0rivz1t95d4txpiehtml"><a class="markdownIt-Anchor" href="#level-01000-rr0rivz1t95d4txpiehtml"></a> Level 01000 | rR0RIVZ1T95d4txpie.html</h2>
+<p>提示中已经给出这一题是上一题的强化版，因此我们仿照上一题，先提取出表中的所有颜色代码。</p>
+<h3 id="从页面获得二进制串"><a class="markdownIt-Anchor" href="#从页面获得二进制串"></a> 从页面获得二进制串</h3>
+<p>但需要注意的是，上一题所用的使用正则表达式<code>#[0-9a-fA-F]&#123;6&#125;</code>提取颜色代码的方式在这里并不适用，因为表中存在有以下三种形式的单元格：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">&quot;background:#102024&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">&quot;background:#040&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中第一种我们在上一题遇到过了，第二种里<code>#040</code>是<code>#004400</code>的简写形式，而第三种，结合.colormatrix上方的样式表：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.colormatrix</span> <span class="selector-tag">td</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: .<span class="number">5em</span>;</span><br><span class="line">    <span class="attribute">height</span>: .<span class="number">5em</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: black;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可知是黑色，即<code>#000000</code>。</p>
+<p>因此我们在提取颜色的时候需要兼顾此三种，提取颜色后我们要将其转换为二进制串，完整代码如下（在审查元素的控制台中运行）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getbits</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> blocks=<span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&quot;td&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> bits=[];</span><br><span class="line">    <span class="keyword">const</span> black=[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> digits=[<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;blocks.<span class="property">length</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">let</span> color;</span><br><span class="line">        <span class="keyword">if</span>(blocks[i].<span class="property">style</span>.<span class="property">background</span>===<span class="string">&quot;&quot;</span>)&#123;</span><br><span class="line">            color=black;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">let</span> c=blocks[i].<span class="property">style</span>.<span class="property">backgroundColor</span>.<span class="title function_">match</span>(<span class="regexp">/\d+/g</span>);</span><br><span class="line">            color=c.<span class="title function_">map</span>(<span class="function">(<span class="params">value</span>)=&gt;</span>&#123;<span class="keyword">return</span> <span class="title class_">Number</span>.<span class="built_in">parseInt</span>(value)&#125;)</span><br><span class="line">        &#125;</span><br><span class="line">        color.<span class="title function_">forEach</span>(<span class="function">(<span class="params">value</span>)=&gt;</span>&#123;</span><br><span class="line">            bits.<span class="title function_">push</span>(...digits.<span class="title function_">map</span>(<span class="function">(<span class="params">i</span>)=&gt;</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> (value&gt;&gt;i)&amp;<span class="number">1</span>;</span><br><span class="line">            &#125;))</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bits;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bits=<span class="title function_">getbits</span>();</span><br></pre></td></tr></table></figure>
+<h3 id="从bmp文件获得二进制串"><a class="markdownIt-Anchor" href="#从bmp文件获得二进制串"></a> 从bmp文件获得二进制串</h3>
+<p>在colormatrix的下方有一条注释：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--  http://localhost:4580/PtdqW.bmp  --&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个url（实际线上版本与此不同）指向一张bmp图片，其内容与上方表格相同，因此我们也可以从这里提取颜色。</p>
+<p>下载图片后我们用python的Pillow库与numpy库（需要用pip安装）来处理图片：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> Image.<span class="built_in">open</span>(<span class="string">&quot;./PtdqW.bmp&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> im:</span><br><span class="line">    ar = np.array(im)</span><br><span class="line"></span><br><span class="line">ar = ar.reshape((<span class="number">20</span>*<span class="number">89</span>*<span class="number">3</span>, <span class="number">1</span>))</span><br><span class="line">bits = np.hstack([(ar &gt;&gt; i) &amp; <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>, -<span class="number">1</span>, -<span class="number">1</span>)])</span><br></pre></td></tr></table></figure>
+<h3 id="将二进制串转化为图片"><a class="markdownIt-Anchor" href="#将二进制串转化为图片"></a> 将二进制串转化为图片</h3>
+<p>经过上述两个操作的任一个我们都能得到一个含有42720个比特的数组。再结合第二条提示<code>267x160</code>，发现<code>267*160=42720</code>，因此我们只需将数组填入宽160高267的矩阵中即可。</p>
+<p>python的完整程序如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> Image.<span class="built_in">open</span>(<span class="string">&quot;./PtdqW.bmp&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> im:</span><br><span class="line">    ar = np.array(im)</span><br><span class="line"></span><br><span class="line">ar = ar.reshape((<span class="number">20</span>*<span class="number">89</span>*<span class="number">3</span>, <span class="number">1</span>))</span><br><span class="line">bits = np.hstack([(ar &gt;&gt; i) &amp; <span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">7</span>, -<span class="number">1</span>, -<span class="number">1</span>)])</span><br><span class="line">bits = bits.reshape((<span class="number">267</span>, <span class="number">160</span>))</span><br><span class="line"></span><br><span class="line">plt.imshow(bits)</span><br><span class="line">plt.savefig(<span class="string">&quot;./output.jpg&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出的图片如下：</p>
+<p><img src="/img/pandora/output.jpg" alt="output" /></p>
+<p>在js中的处理如下（接上个程序，在审查元素的控制台中运行）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">showimg</span>(<span class="params">bits</span>)&#123;</span><br><span class="line">    <span class="keyword">const</span> el=<span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;table&quot;</span>);</span><br><span class="line">    el.<span class="property">className</span>=<span class="string">&quot;colormatrix2&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(k&lt;bits.<span class="property">length</span>)&#123;</span><br><span class="line">        <span class="keyword">let</span> tr=<span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;tr&quot;</span>)</span><br><span class="line">        <span class="keyword">let</span> t=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;<span class="number">160</span>;i++,k++)&#123;</span><br><span class="line">            t+=bits[k]?<span class="string">&quot;&lt;td&gt;&lt;/td&gt;&quot;</span>:<span class="string">`&lt;td class=&quot;white&quot;&gt;&lt;/td&gt;`</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        tr.<span class="property">innerHTML</span>=t;</span><br><span class="line">        el.<span class="title function_">appendChild</span>(tr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> style=<span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;style&quot;</span>)</span><br><span class="line">    style.<span class="property">innerHTML</span>=<span class="string">`</span></span><br><span class="line"><span class="string">    .colormatrix2 td&#123;</span></span><br><span class="line"><span class="string">        width: .1em;</span></span><br><span class="line"><span class="string">        height: .1em;</span></span><br><span class="line"><span class="string">        background-color: black;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    .colormatrix2 td.white&#123;</span></span><br><span class="line"><span class="string">        background-color: white;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">    <span class="keyword">const</span> parent=<span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&quot;flexbox&quot;</span>)[<span class="number">0</span>];</span><br><span class="line">    parent.<span class="title function_">appendChild</span>(style);</span><br><span class="line">    parent.<span class="title function_">appendChild</span>(el);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">showimg</span>(bits);</span><br></pre></td></tr></table></figure>
+<p>可以在页面中看到如下图像：</p>
+<p><img src="/img/pandora/showimg.png" alt="showimg" /></p>
+<p>亦可将上面的python程序的后两行改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;a.txt&quot;</span>,<span class="string">&quot;w&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> bits:</span><br><span class="line">        <span class="built_in">print</span>(*(<span class="string">&quot;*&quot;</span> <span class="keyword">if</span> i <span class="keyword">else</span> <span class="string">&#x27; &#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> r),sep=<span class="string">&quot;&quot;</span>,file=f)</span><br></pre></td></tr></table></figure>
+<p>运行程序后，打开<code>a.txt</code>，在合适的字体、字号与行距下可以看到由字符组成的图片。</p>
+<p>通过图片我们可以看出这张图中的是埃菲尔铁塔，其英文名是<code>The Eiffel Tower</code>或<code>Eiffel Tower</code>，又因为题目要求“答案为由<strong>驼峰命名法</strong>（<strong>首字母小写</strong>）结合而成的<strong>三个单词</strong>”，所以答案是<code>theEiffelTower</code>。</p>
+<p>注：图片来源：<a target="_blank" rel="noopener" href="https://commons.wikimedia.org/wiki/File:Eiffel_Tower_1945.jpg">https://commons.wikimedia.org/wiki/File:Eiffel_Tower_1945.jpg</a> 原图属于公有领域，在引用时做了亿点点处理以压缩体积。</p>
+<h2 id="level-01001-theeiffeltowerhtml"><a class="markdownIt-Anchor" href="#level-01001-theeiffeltowerhtml"></a> Level 01001 | theEiffelTower.html</h2>
+<h3 id="base64解码"><a class="markdownIt-Anchor" href="#base64解码"></a> Base64解码</h3>
+<p>首先观察题目给的数据，根据提示得知这是使用base64编码的二进制数据，因此首先使用base64对其解码。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64decode</span><br><span class="line"></span><br><span class="line">data = b64decode(<span class="string">&quot;ASJcDiBgWReEMk5KyjCGSOi0OQNT&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure>
+<p>得到一串二进制数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b&#x27;\x01&quot;\\\x0e `Y\x17\x842NJ\xca0\x86H\xe8\xb49\x03S&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="校验"><a class="markdownIt-Anchor" href="#校验"></a> 校验</h3>
+<p>根据提示，接下来要用汉明码进行校验，因此先将其转化为仅含0与1的数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bits = [i <span class="keyword">for</span> n <span class="keyword">in</span> data <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">map</span>(</span><br><span class="line">    <span class="keyword">lambda</span> power:(n &gt;&gt; power) &amp; <span class="number">1</span>, <span class="built_in">range</span>(<span class="number">7</span>, -<span class="number">1</span>, -<span class="number">1</span>))]</span><br><span class="line"><span class="built_in">print</span>(*bits,sep=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">000000010010001001011100000011100010000001100000010110010001011110000100001100100100111001001010110010100011000010000110010010001110100010110100001110010000001101010011</span><br></pre></td></tr></table></figure>
+<p>然后校验：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"></span><br><span class="line"><span class="built_in">pow</span> = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span> &lt;&lt; <span class="built_in">pow</span>)-<span class="number">1</span> &lt; <span class="built_in">len</span>(bits):</span><br><span class="line">    <span class="built_in">pow</span> += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">parities = [<span class="number">0</span>]*<span class="built_in">pow</span></span><br><span class="line"><span class="keyword">for</span> digit <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">pow</span>):</span><br><span class="line">    parities[-digit-<span class="number">1</span>] = reduce(<span class="keyword">lambda</span> x, y: x ^ y,</span><br><span class="line">                    (v <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(bits) <span class="keyword">if</span> (i+<span class="number">1</span> &gt;&gt; digit) &amp; <span class="number">1</span>), <span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(parities)</span><br></pre></td></tr></table></figure>
+<p>输出：<code>[0, 0, 0, 1, 1, 0, 0, 0]</code>，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>00011000</mn><msub><mo stretchy="false">)</mo><mn>2</mn></msub><mo>=</mo><mn>24</mn></mrow><annotation encoding="application/x-tex">(00011000)_2=24</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">1</span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">4</span></span></span></span>，说明<strong>从1开始数</strong>的第24位发生了翻转（当然也可能有多位发生了翻转，不过那样题目就做不下去了，故不在考虑范围内），因此对数组的第23位进行修正：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bits[<span class="number">23</span>]=<span class="number">0</span> <span class="keyword">if</span> bits[<span class="number">23</span>] <span class="keyword">else</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>然后剔除数据中的校验位：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">checkedbits = [v <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(bits) <span class="keyword">if</span> i &amp; (i+<span class="number">1</span>)]</span><br><span class="line"><span class="built_in">print</span>(*checkedbits,sep=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0000001000101011101000011100100000011000000101100100010111000010000110010010011100100101011001010001100001000011001001001110100010110100001110010000001101010011</span><br></pre></td></tr></table></figure>
+<h3 id="解码"><a class="markdownIt-Anchor" href="#解码"></a> 解码</h3>
+<p>根据提示的第三条<strong>Zeckendorf定理</strong>我们可以在搜索引擎中找到其在编码领域的应用，即<strong>斐波那契编码</strong>。斐波那契编码仅有0与1组成，其中每一位的位值都对应一个斐波那契数，将斐波那契编码中为1的位对应的位值求和即可得到编码表示的十进制数，例如<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1010101</mn><msub><mo stretchy="false">)</mo><mrow><mi>f</mi><mi>i</mi><mi>b</mi></mrow></msub><mo>=</mo><mn>21</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>33</mn></mrow><annotation encoding="application/x-tex">(1010101)_{fib}=21+8+3+1=33</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mord">0</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361079999999999em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">b</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span><span class="mord">3</span></span></span></span>。Zeckendorf定理能确保在合适的条件下，一个数在斐波那契编码中不会出现两个连续的1。若是在每个数的末尾补充一个1，这个1与下一个数首位的1连在一起形成“11”，我们可以据此区分编码串中相邻的两个数：</p>
+<ul>
+<li>若出现连续的两个1，则上一个数以0结尾，以第一个1作为分隔符；</li>
+<li>若出现连续的三个1，则上一个数以1结尾，以第二个1作为分隔符。</li>
+</ul>
+<p>上面的二进制串可以依此法分为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">000000100010101 10100001 1001000000 100000010 1001000101 1000010000 1001001001 1001001010 100101000 1000010000 1001001001 10100010 10100001 1001000000 10101001</span><br></pre></td></tr></table></figure>
+<p>然后将斐波那契编码转换为十进制，得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">67 48 110 57 114 97 116 117 73 97 116 49 48 110 53</span><br></pre></td></tr></table></figure>
+<p>最后按ascii码表转换为字符，得到答案：<code>C0n9ratuIat10n5</code></p>
+<p>解码的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 斐波那契数列</span></span><br><span class="line">fib = [<span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line"><span class="keyword">while</span> fib[-<span class="number">1</span>] &lt;= <span class="number">1024</span>:</span><br><span class="line">    fib.append(fib[-<span class="number">2</span>]+fib[-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">checkedbits.pop()  <span class="comment"># 忽略最后一个数末尾添的1</span></span><br><span class="line">nums = []</span><br><span class="line">n, lastbit, p = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">reversed</span>(checkedbits):</span><br><span class="line">    <span class="keyword">if</span> i <span class="keyword">and</span> lastbit:</span><br><span class="line">        nums.append(n)</span><br><span class="line">        n, lastbit, p = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> i:</span><br><span class="line">            n += fib[p]</span><br><span class="line">        lastbit = i</span><br><span class="line">        p += <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> n:</span><br><span class="line">    nums.append(n)</span><br><span class="line"></span><br><span class="line">answer = <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">map</span>(<span class="built_in">chr</span>, <span class="built_in">reversed</span>(nums)))</span><br><span class="line"><span class="built_in">print</span>(answer)</span><br></pre></td></tr></table></figure>
+<h2 id="bonus的获取方法"><a class="markdownIt-Anchor" href="#bonus的获取方法"></a> Bonus的获取方法</h2>
+<h3 id="bonus-0-iwndvqjy"><a class="markdownIt-Anchor" href="#bonus-0-iwndvqjy"></a> Bonus 0: iWNDvqJY</h3>
+<p>在Level 0打开审查元素，发现在文字的第二、三段之间隐藏了一个元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">&quot;display: none;&quot;</span>&gt;</span>Bonus0: iWNDvqJY<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="bonus-1-8864ttqnpplh"><a class="markdownIt-Anchor" href="#bonus-1-8864ttqnpplh"></a> Bonus 1: 8864TTQNpplh</h3>
+<p>在Level 6中穷举时可以得到两个存在的页面，其中<code>8642TQNKplhd</code>指向Level 7，另一个<code>8864TTQNpplh</code>即为Bonus 1。</p>
+<h3 id="bonus-2-latoureiffel"><a class="markdownIt-Anchor" href="#bonus-2-latoureiffel"></a> Bonus 2: laTourEiffel</h3>
+<p>在Level 8得到答案前的最后一步，法文单词怎么能不算单词呢（逃）。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sumsc-caa.github.io/2021/12/03/pandora-2021-1-maze-solution/" title="2021 魔盒挑战第一期-网页迷宫篇 解题流程与说明" target="_blank" rel="external">https://sumsc-caa.github.io/2021/12/03/pandora-2021-1-maze-solution/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="//github.com/sumsc-caa" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/img/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="//github.com/sumsc-caa" target="_blank"><span class="text-dark">苏州大学计算机爱好者协会（微软学生俱乐部）</span><small class="ml-1x">微软开源学习社群联络社团</small></a></h3>
+        <div>计算机爱好者协会是苏州大学计算机科学与技术学院的学术性社团，为2015年与微软亚洲研究院联合成立的苏州大学微软学生俱乐部，现为微软开源学习社群的联络社团。欢迎加入俱乐部QQ群：497516494 | 关注微信公众号：SUMSTC</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/04/28/Pandora-22-5-q1/" title="魔盒挑战 2022.5 简单LISP解释器"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/11/25/Pandora-2021-1/" title="2021 魔盒挑战 第一期"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 SUMSC
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

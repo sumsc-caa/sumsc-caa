@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>2022 Hackathon Online | SUMSC</title>
+  <meta name="description" content="异步IO与QQ机器人  作者：苏州大学计算机爱好者协会 王嘉睿  如果是常年混迹各大qq群的同学想必都或多或少地见过qq机器人，它们常常具有丰富的功能，并在不同类型的群中发挥着作用：游戏群里的qq机器人可以在对话中查询游戏的相关数据；主播粉丝群里的机器人可以在主播开播时发消息提醒大家；vtuber字幕组群中的qq机器人可以是兼拉取推文、嵌字和发布于一体的“烤推机”；年级群里的qq机器人也可以被辅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022 Hackathon Online">
+<meta property="og:url" content="https://sumsc-caa.github.io/2022/06/05/hackathon2022-online/index.html">
+<meta property="og:site_name" content="SUMSC">
+<meta property="og:description" content="异步IO与QQ机器人  作者：苏州大学计算机爱好者协会 王嘉睿  如果是常年混迹各大qq群的同学想必都或多或少地见过qq机器人，它们常常具有丰富的功能，并在不同类型的群中发挥着作用：游戏群里的qq机器人可以在对话中查询游戏的相关数据；主播粉丝群里的机器人可以在主播开播时发消息提醒大家；vtuber字幕组群中的qq机器人可以是兼拉取推文、嵌字和发布于一体的“烤推机”；年级群里的qq机器人也可以被辅">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/hackathon2022o/structure.png">
+<meta property="article:published_time" content="2022-06-05T04:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-01T03:24:16.583Z">
+<meta property="article:author" content="SUMSC">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Hackathon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sumsc-caa.github.io/img/hackathon2022o/structure.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sumsc-caa.github.io/2022/06/05/hackathon2022-online/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="SUMSC" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="//github.com/sumsc-caa" target="_blank">
+          <img class="img-circle img-rotate" src="/img/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">苏州大学计算机爱好者协会（微软学生俱乐部）</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">微软开源学习社群联络社团</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Suzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-blog">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">
+            
+            <span class="menu-title">技术博客</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-activity">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8">
+            
+            <span class="menu-title">活动</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-github">
+          <a target="_blank" rel="noopener" href="//github.com/sumsc-caa">
+            
+            <span class="menu-title">GitHub</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <span class="menu-title">友情链接</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <span class="menu-title">关于我们</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <div><p>这里是苏州大学计算机爱好者协会（微软学生俱乐部），在这里，你可以看到关于我们的信息以及我们最近的动态。</p><p>欢迎交流与分享经验!</p></div><hr/> <div style="line-height:30px;"> <!-- <h4>🔥 最新活动</h4><div> <div style="line-height:26px;"><p>号外号外！苏州大学计算机爱好者协会<a href="/2022/06/05/hackathon2022-online/" target="_blank">2022“Hackathon：Online”</a>来啦！ <em><a href="https://mp.weixin.qq.com/s/YI0Bjhai6vb4BMhXu6cGUg" target="_blank">活动推送传送门</a></em> <p>本次Hackathon的形式不同以往，将以线上的方式进行。本次活动将在6月5日~6月12日展开，历时7天，给予各位同学更充足的时间和更灵活的安排来呈现出一个创意满满的作品！</p> </p><p>本次Hackathon以“聊天机器人”为主题，在6月5日将由主持人为大家介绍本次Hackathon的题目，并进行相关技术的教学。比赛期间也会有相关技术成员在群内为大家答疑解惑。在比赛进程的最后一天，将由各小组成员展示自己的精彩作品，还有丰富奖品等你来拿！ </p><p>还在犹豫什么？快加入QQ群488140447，在头脑风暴中挑战自我吧！<p></div><hr/> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a><span class="category-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hackathon/" style="font-size: 13.67px;">Hackathon</a> <a href="/tags/Pandora/" style="font-size: 13.33px;">Pandora</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13px;">前端</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-2/" class="title">2022 Hackathon: 字符画与康威生命游戏</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-asciiart/" class="title">2022 Hackathon: 字符画 示例程序与帮助</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:02.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-gameoflife/" class="title">2022 Hackathon: 康威生命游戏 示例程序与使用说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:01.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/18/techpost-2022-1/" class="title">技术赋能#1：python的可迭代对象、迭代器与生成器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-18T04:23:48.000Z" itemprop="datePublished">2022-10-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/06/05/hackathon2022-online/" class="title">2022 Hackathon Online</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-06-05T04:00:00.000Z" itemprop="datePublished">2022-06-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-hackathon2022-online" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2022 Hackathon Online
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/06/05/hackathon2022-online/" class="article-date">
+	  <time datetime="2022-06-05T04:00:00.000Z" itemprop="datePublished">2022-06-05</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Hackathon/" rel="tag">Hackathon</a>, <a class="article-tag-link-link" href="/tags/Python/" rel="tag">Python</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/06/05/hackathon2022-online/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 4.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 15(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="异步io与qq机器人"><a class="markdownIt-Anchor" href="#异步io与qq机器人"></a> 异步IO与QQ机器人</h1>
+<blockquote>
+<p>作者：苏州大学计算机爱好者协会 王嘉睿</p>
+</blockquote>
+<p>如果是常年混迹各大qq群的同学想必都或多或少地见过qq机器人，它们常常具有丰富的功能，并在不同类型的群中发挥着作用：游戏群里的qq机器人可以在对话中查询游戏的相关数据；主播粉丝群里的机器人可以在主播开播时发消息提醒大家；vtuber字幕组群中的qq机器人可以是兼拉取推文、嵌字和发布于一体的“烤推机”；<s>年级群里的qq机器人也可以被辅导员设置用来提醒同学们及时完成青年大学习；</s>此外有些qq机器人还会安装一些小游戏，例如成语接龙等，用于活跃群里的气氛。</p>
+<p>本期魔盒挑战旨在通过引导你动手实现一个简易的qq机器人，让你逐步了解异步编程和python的asyncio（异步io）。</p>
+<h2 id="1-背景知识"><a class="markdownIt-Anchor" href="#1-背景知识"></a> 1 背景知识</h2>
+<h3 id="11-异步"><a class="markdownIt-Anchor" href="#11-异步"></a> 1.1 异步</h3>
+<p><em>了解过异步的同学可以跳过本节。</em></p>
+<p>首先，什么是异步？要回答这个问题，我们可以看看这个例子（网上找的小学奥数题）：</p>
+<blockquote>
+<p>玲玲想给客人烧水沏茶。洗水壶要2分钟，烧开水要12分钟，买茶叶要5分钟，洗茶杯要1分钟，冲茶叶要1分钟，要让客人尽可能早的喝上茶，你认为怎样安排才最合理？最少需要多少分钟？</p>
+</blockquote>
+<p>答案很简单，先洗水壶 <code>2</code> 分钟，然后用水壶烧开水，同时买茶叶、洗茶杯，共 <code>min(12,5+1)=12</code> 分钟，最后使用烧好的开水和买来的茶叶泡茶，需要 <code>1</code> 分钟。因此最少需要 <code>2+12+1=15</code> 分钟才能让客人喝上茶。</p>
+<p>接下来用伪代码复现一下这个安排：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">洗水壶() <span class="comment"># 2 min</span></span><br><span class="line">烧开水() <span class="comment"># 12 min</span></span><br><span class="line">冲茶叶() <span class="comment"># 1 min</span></span><br></pre></td></tr></table></figure>
+<p>诶？好像不太对，我们怎么让程序在执行A任务的同时完成B任务呢？</p>
+<p>有的同学可能会想到多线程，我们再开一个线程让它等水烧开就行：<br />
+<em>（CPython的多线程其实是假的多线程，详见<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/glossary.html#term-global-interpreter-lock">全局解释器锁</a>，不过在这里不重要）</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">洗水壶()    <span class="comment"># 2 min</span></span><br><span class="line">t=threading.Thread(target=烧开水)</span><br><span class="line">t.start()</span><br><span class="line">买茶叶()    <span class="comment"># 5 min</span></span><br><span class="line">洗茶杯()    <span class="comment"># 1 min</span></span><br><span class="line">t.join()   <span class="comment"># 12-5-1=6 min</span></span><br><span class="line">冲茶叶()    <span class="comment"># 1 min</span></span><br></pre></td></tr></table></figure>
+<p>但是这样就显得有点大材小用了，只是泡个茶居然要用掉两个线程，有没有更好的方法呢？</p>
+<p>让我们来回顾一下解题的过程，首先要理清楚五个任务的因果关系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">洗水壶</span><br><span class="line">  │  </span><br><span class="line">烧开水  买茶叶  洗茶杯</span><br><span class="line">  └──────┼──────┘</span><br><span class="line">　　　  冲茶叶</span><br></pre></td></tr></table></figure>
+<p>然后我们会把题中的任务分成两类：</p>
+<ul>
+<li>A类：洗水壶、买茶叶、洗茶杯、冲茶叶</li>
+<li>B类：烧开水</li>
+</ul>
+<p>其中A类任务需要占用玲玲的处理时间，因此不能同时进行，例如玲玲不能在洗茶杯的同时出门买茶叶，称其为“<strong>同步</strong>”的任务。而B类任务不需要占用处理时间，换言之玲玲在烧开水的时候只需要将热水壶装好水插上电就行，剩下的等待时间她可以用来处理其它A类或者B类（比如再烧一壶水）任务，因此可以称其为“<strong>异步</strong>”的任务。</p>
+<p>因为烧开水是异步的，且和买茶叶、洗茶杯之间不存在因果关系，所以我们安排玲玲在烧开水的同时去买茶叶和洗茶杯，节省了6分钟的时间。又因为剩下的任务必须要按因果顺序进行，所以这个就是时间最短的安排了。</p>
+<p>而在python中，上面的程序可以使用asyncio改写成这样，其中的函数虽然都是异步函数的<u>形式</u>，但是只有烧开水是真正的异步：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio <span class="comment"># python的异步io库</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">text1,text2,duration,block=<span class="literal">True</span></span>):</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">wrapped</span>():</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#123;:.0f&#125;&#x27;</span>.<span class="built_in">format</span>(time.time()-t0),text1)</span><br><span class="line">        <span class="keyword">if</span> block:</span><br><span class="line">            time.sleep(duration)            <span class="comment"># 同步的等待</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">await</span> asyncio.sleep(duration)   <span class="comment"># 异步的等待    </span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;&#123;:.0f&#125;&#x27;</span>.<span class="built_in">format</span>(time.time()-t0),text2)</span><br><span class="line">    <span class="keyword">return</span> wrapped</span><br><span class="line"></span><br><span class="line">洗水壶=f(<span class="string">&#x27;开始洗水壶&#x27;</span>,<span class="string">&#x27;水壶洗好啦&#x27;</span>,<span class="number">2</span>,<span class="literal">True</span>)  <span class="comment"># 同步</span></span><br><span class="line">烧开水=f(<span class="string">&#x27;开始烧开水&#x27;</span>,<span class="string">&#x27;水烧开啦&#x27;</span>,<span class="number">12</span>,<span class="literal">False</span>)  <span class="comment"># 异步</span></span><br><span class="line">买茶叶=f(<span class="string">&#x27;开始买茶叶&#x27;</span>,<span class="string">&#x27;茶叶买好了&#x27;</span>,<span class="number">5</span>,<span class="literal">True</span>)  <span class="comment"># 同步</span></span><br><span class="line">洗茶杯=f(<span class="string">&#x27;开始洗茶杯&#x27;</span>,<span class="string">&#x27;茶杯洗好了&#x27;</span>,<span class="number">1</span>,<span class="literal">True</span>)  <span class="comment"># 同步</span></span><br><span class="line">冲茶叶=f(<span class="string">&#x27;开始冲茶叶&#x27;</span>,<span class="string">&#x27;茶冲好了&#x27;</span>,<span class="number">1</span>,<span class="literal">True</span>)    <span class="comment"># 同步</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">泡茶</span>():</span><br><span class="line">    <span class="keyword">await</span> 洗水壶()           <span class="comment"># 洗水壶</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.gather(   <span class="comment"># 等待下面三个任务全部完成</span></span><br><span class="line">        烧开水(),            <span class="comment"># 首先执行烧开水，因为烧开水是异步的，等待的时间内会依次执行下面两个任务</span></span><br><span class="line">        买茶叶(),</span><br><span class="line">        洗茶杯(),</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">await</span> 冲茶叶()           <span class="comment"># 冲茶叶</span></span><br><span class="line"></span><br><span class="line">t0=time.time()  <span class="comment"># 记录开始时间</span></span><br><span class="line">asyncio.run(泡茶()) <span class="comment"># 运行异步函数的入口</span></span><br></pre></td></tr></table></figure>
+<p>运行之后可以看到类似这样的结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0 开始洗水壶</span><br><span class="line">2 水壶洗好啦</span><br><span class="line">2 开始烧开水</span><br><span class="line">2 开始买茶叶</span><br><span class="line">7 茶叶买好了</span><br><span class="line">7 开始洗茶杯</span><br><span class="line">8 茶杯洗好了</span><br><span class="line">14 水烧开啦</span><br><span class="line">14 开始冲茶叶</span><br><span class="line">15 茶冲好了</span><br></pre></td></tr></table></figure>
+<p>可以看到烧开水的等待时间的确有一部分被玲玲用来买茶叶和洗茶杯了，这样玲玲就可以在一个线程内完成泡茶的任务了。实际程序中的任务模型会比上面的例子复杂许多，可能会有上百个异步的网络请求在同时进行，而python的异步io能帮助我们很好地安排和执行这些任务，同时保持代码的简洁与优雅。</p>
+<p>最早在编程语言中大面积使用异步的是JavaScript，关于这个的故事可以参考这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/li123128/article/details/80650256">https://blog.csdn.net/li123128/article/details/80650256</a> 。而python中引入异步io最早是在2015年更新的python3.5，经过几年的打磨和优化，语法逐渐定型成我们今天所见的这个样子。</p>
+<p>希望以上的说明能为你理解异步这个概念提供一些帮助。以下是一些关于python的异步IO的参考资料：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/asyncio.html">python官方文档 | asyncio——异步I/O</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017959540289152">廖雪峰的官方网站 | 异步IO</a></li>
+</ul>
+<h3 id="12-websocket"><a class="markdownIt-Anchor" href="#12-websocket"></a> 1.2 WebSocket</h3>
+<blockquote>
+<p><strong>WebSocket</strong>是一种网络传输协议，可在单个TCP连接上进行全双工通信，位于OSI模型的应用层。</p>
+</blockquote>
+<p>在我们平时所接触的http/https协议中，所有请求都只能由客户端主动发起，这使得以往要实现从服务端向客户端实时发送数据只能使用轮询的模式，即客户端每隔一段时间向服务端发送http请求，服务端收到请求后返回这段时间内累积的数据。这个轮询方案有几个问题：</p>
+<p>其一，传输的损耗很大。假设某实时聊天软件（IM）的客户端每隔<code>5秒</code>向服务器发送一个http的轮询请求，请求和响应的header的大小均为<code>0.5KB</code>，平均情况下每隔15秒就有人给你发一条<code>1KB</code>的消息（大约500个汉字）。这样你每分钟就要花掉<code>1KB*60s/5s+1KB*60s/15s=16KB</code>的流量，一个月下来就是<code>16KB*60*24*30=691.2MB</code>，而其中真正有效的信息只有<code>(1KB/15s)/(1KB/5s+1KB/15s)=25%</code>，无论是用户还是服务提供商都不想承受另外75%的没什么用的流量。</p>
+<p>其二，不适合对延迟很敏感的场景。还是上面那个例子，在轮询机制下消息的延迟上限（不计其它网络延迟）与轮询的间隔相等，在上面的例子中你最多要等5秒才能收到朋友发的消息。而在即时对决的网游中为了降低延迟则必须提高轮询的频率，如果画面帧率为<code>60fps</code>，为了让画面保持同步轮询的频率也得大于<code>60Hz</code>，这样会导致巨额的流量（若是按照上面的数据算，相当于每一帧都要花掉至少<code>1KB</code>，20分钟累计<code>1KB*60Hz*60s/min*20min=72MB</code>），即使把header大小降到0（也就是不使用http协议，直接用tcp），高频率的请求依然会给服务器造成很大的压力。</p>
+<p>WebSocket则可以很好地避免上述问题。WebSocket是全双工的，换言之ws连接的服务端和客户端都可以主动向对方发送信息，并且发送的消息不像http协议需要耗费一定体积作为header，这样就解决了轮询机制的两个问题。现在ws因为其特性被广泛运用在许多即时性强的应用中，例如实时聊天、直播平台的实时评论/弹幕、游戏的客户端与服务端的通信等等。</p>
+<p>项目中使用到的go-cqhttp也提供了http轮询和websocket两种模式，这里我们选择后者是因为后者代码的逻辑更简单。</p>
+<p>在python中我们将使用<strong>websockets</strong>包(package)来和go-cqhttp服务器通信。python中包的安装方法在此不在赘述，建议你为了任务新建一个虚拟环境（参见 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/venv.html">venv - 创建虚拟环境</a>），这样提交的时候可以方便一些。你可以从官方文档了解这个包的基本使用方法，在这里我们只要用到它作为ws客户端的用法，因此服务端的部分可以略过不看。</p>
+<p>相关资料（感兴趣的同学可以阅读其中的 RFC 6455 了解 WebSocket 协议的技术细节）：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://websockets.readthedocs.io/en/stable/index.html">websockets 10.3 documentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6455">RFC 6455 - The WebSocket Protocol</a></li>
+</ul>
+<h2 id="2-说明"><a class="markdownIt-Anchor" href="#2-说明"></a> 2 说明</h2>
+<h3 id="21-结构"><a class="markdownIt-Anchor" href="#21-结构"></a> 2.1 结构</h3>
+<p>这个项目的结构如下图：<br />
+<img src="/img/hackathon2022o/structure.png" alt="项目结构" /></p>
+<p>其中<a target="_blank" rel="noopener" href="https://github.com/botuniverse/onebot"><strong>OneBot标准</strong></a>是一个聊天机器人应用接口标准（官网：<a target="_blank" rel="noopener" href="https://onebot.dev/">https://onebot.dev/</a> ），<a target="_blank" rel="noopener" href="https://github.com/Mrs4s/go-cqhttp"><strong>go-cqhttp</strong></a>是OneBot协议的服务端的golang实现（官网：<a target="_blank" rel="noopener" href="https://docs.go-cqhttp.org/">https://docs.go-cqhttp.org/</a> ），在我们的项目中它的作用是连接QQ服务器，将其发来的消息解包后再用OneBot标准打包发送给我们的程序，同样我们发送的请求也会被go-cqhttp以QQ服务器可解析的方式重新打包后发送。</p>
+<h3 id="22-比赛说明"><a class="markdownIt-Anchor" href="#22-比赛说明"></a> 2.2 比赛说明</h3>
+<h4 id="221-赛程"><a class="markdownIt-Anchor" href="#221-赛程"></a> 2.2.1 赛程</h4>
+<ul>
+<li>第一部分 开幕式：6月5日下午</li>
+<li>第二部分 Hackathon主体：6月5日 - 6月12日</li>
+<li>第三部分 作品展示与评选：6月12日 13:30-17:30</li>
+</ul>
+<p>请于作品展示开始前（即 6月12日 13:30 之前）将你所写的<strong>程序的源码</strong>压缩后以你的小组名命名并发送至 <a href="mailto:furffy@outlook.com">furffy@outlook.com</a></p>
+<h4 id="222-评分方式"><a class="markdownIt-Anchor" href="#222-评分方式"></a> 2.2.2 评分方式</h4>
+<p>比赛一共有6道题目，各题的分值与评价方式如下：</p>
+<table>
+<thead>
+<tr>
+<th>题号</th>
+<th>标题</th>
+<th>分值</th>
+<th>评价标准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#1</td>
+<td>运行 go-cqhttp 服务端</td>
+<td>5分</td>
+<td>引导任务，不需要展示。<br/>只要完成#2就能得到这5分。</td>
+</tr>
+<tr>
+<td>#2</td>
+<td>复读机</td>
+<td>5分</td>
+<td>引导任务，不需要展示。<br/>只要完成#3就能得到这5分。</td>
+</tr>
+<tr>
+<td>#3</td>
+<td>天气助手</td>
+<td>15分</td>
+<td>基础分15分</td>
+</tr>
+<tr>
+<td>#4</td>
+<td>定时任务</td>
+<td>20分</td>
+<td>基础分10分，评委分10分</td>
+</tr>
+<tr>
+<td>#5</td>
+<td>小游戏</td>
+<td>20分</td>
+<td>基础分10分，评委分10分</td>
+</tr>
+<tr>
+<td>#6</td>
+<td>自由开发</td>
+<td>30分</td>
+<td>基础分10分，评委分20分</td>
+</tr>
+</tbody>
+</table>
+<p>其中，只要你能完成题目的要求就可以拿到基础分，评委分是评委对该题给出的评分的均值。</p>
+<h3 id="23-注意事项"><a class="markdownIt-Anchor" href="#23-注意事项"></a> 2.3 注意事项</h3>
+<ol>
+<li>你<span style="color:#DB452E;font-size:larger;font-weight:bold;">不可以</span>使用现成的python机器人框架，例如<a target="_blank" rel="noopener" href="https://docs.nonebot.dev/">nonebot</a>、<a target="_blank" rel="noopener" href="https://v2.nonebot.dev/">nonebot2</a>等，但是你可以在编写代码时参考这些框架的结构与实现。</li>
+<li>虽然我们不会公开发布你上传的代码，但是<span style="color:#DB452E;font-size:larger;font-weight:bold;">上传时请务必抹去所有可能会导致你个人隐私泄漏的信息，包括但不限于：在go-cqhttp配置文件中填写的qq号与密码。</span><strong>要对你自己的信息安全负责哦~</strong></li>
+<li>qq机器人在群里发消息时有一定概率会被腾讯风控，具体表现为机器人无法正常在群聊中发送消息，这在go-cqhttp的输出中会有体现（风控 != 封号，若是你的机器人被风控了也不必惊慌，大概过几天就好了，但是这并不代表用自己的大号作为qq机器人就完全没有风险）。目前私信是不受风控影响的，因此比赛中的所有问题都只要求在私信的场景下能正常工作。</li>
+</ol>
+<h3 id="24-参考资料"><a class="markdownIt-Anchor" href="#24-参考资料"></a> 2.4 参考资料</h3>
+<p>以下这些python包或许会有用：</p>
+<ul>
+<li>asyncio: <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/asyncio.html">documentation</a></li>
+<li>json: <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/json.html">documentation</a></li>
+<li>logging: <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/logging.html">documentation</a></li>
+<li>websockets: <a target="_blank" rel="noopener" href="https://websockets.readthedocs.io/en/stable/index.html">documentation</a> | <a target="_blank" rel="noopener" href="https://github.com/aaugustin/websockets">github</a> | <a target="_blank" rel="noopener" href="https://pypi.org/project/websockets/">PyPI</a></li>
+<li>httpx: <a target="_blank" rel="noopener" href="https://www.python-httpx.org/">documentation</a> | <a target="_blank" rel="noopener" href="https://github.com/encode/httpx/">github</a> | <a target="_blank" rel="noopener" href="https://pypi.org/project/httpx/">PyPI</a></li>
+<li>aioschedule (schedule的异步IO版): <a target="_blank" rel="noopener" href="https://github.com/ibrb/python-aioschedule">github</a> | <a target="_blank" rel="noopener" href="https://pypi.org/project/aioschedule/">PyPI</a> | <a target="_blank" rel="noopener" href="https://schedule.readthedocs.io/en/stable/">schedule的documentation</a></li>
+</ul>
+<p>还有一些资料：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.go-cqhttp.org/api/">go-cqhttp api文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/botuniverse/onebot-11">onebot-11 协议</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/58454190/python-async-waiting-for-stdin-input-while-doing-other-stuff">stack overflow - Python async: Waiting for stdin input while doing other stuff</a></li>
+<li><a target="_blank" rel="noopener" href="https://tenapi.cn/">TenApi</a> （一些有用的公共api）</li>
+</ol>
+<h2 id="3-题目"><a class="markdownIt-Anchor" href="#3-题目"></a> 3 题目</h2>
+<h2 id="31-运行-go-cqhttp-服务端"><a class="markdownIt-Anchor" href="#31-运行-go-cqhttp-服务端"></a> 3.1 运行 go-cqhttp 服务端</h2>
+<blockquote>
+<p>(5分) 参考go-cqhttp的官方文档的<a target="_blank" rel="noopener" href="https://docs.go-cqhttp.org/guide/quick_start.html">快速开始</a>和<a target="_blank" rel="noopener" href="https://docs.go-cqhttp.org/guide/config.html">配置</a>，下载、配置并在本地（或者你的VPS上）运行一个go-cqhttp服务端。</p>
+</blockquote>
+<p><em>注：配置时请使用你的QQ号或者你的小号，servers部分选择“正向ws”模式。</em></p>
+<h3 id="311-测试程序"><a class="markdownIt-Anchor" href="#311-测试程序"></a> 3.1.1 测试程序</h3>
+<p>以下是一个测试程序，它可以通过ws协议连接go-cqhttp服务器（正向ws），并实时输出它发送的信息，其中地址和<code>&lt;port&gt;</code>要替换为你在本地运行的go-cqhttp服务器的地址和端口，<code>&lt;access-token&gt;</code>替换为你在go-cqhttp的设置文件中设定的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> websockets</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> websockets.connect(<span class="string">&quot;ws://localhost:&lt;port&gt;/?access_token=&lt;access-token&gt;&quot;</span>) <span class="keyword">as</span> websocket:</span><br><span class="line">        <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="keyword">await</span> websocket.recv())</span><br><span class="line"></span><br><span class="line">asyncio.run(main())</span><br></pre></td></tr></table></figure>
+<p>如果配置没问题，程序会首先收到连接成功的信息，长这个样子：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;_post_method&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;meta_event_type&quot;</span><span class="punctuation">:</span><span class="string">&quot;lifecycle&quot;</span><span class="punctuation">,</span><span class="attr">&quot;post_type&quot;</span><span class="punctuation">:</span><span class="string">&quot;meta_event&quot;</span><span class="punctuation">,</span><span class="attr">&quot;self_id&quot;</span><span class="punctuation">:</span>&lt;当前qq号&gt;<span class="punctuation">,</span><span class="attr">&quot;sub_type&quot;</span><span class="punctuation">:</span><span class="string">&quot;connect&quot;</span><span class="punctuation">,</span><span class="attr">&quot;time&quot;</span><span class="punctuation">:</span>&lt;当前时间戳&gt;<span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>如果你在cqhttp的设置里打开了心跳，在程序启动后每隔一段时间就能收到来自服务器的heartbeat。如果你试着用别的号给登录机器人的号发送了消息，应该可以在输出中看到go-cqhttp给客户端打包转发的消息。</p>
+<h2 id="32-复读机"><a class="markdownIt-Anchor" href="#32-复读机"></a> 3.2 复读机</h2>
+<blockquote>
+<p>(5分) 以上面的测试程序为基础，参考go-cqhttp的api文档，编写程序实现当某特定的qq号（你或者你的好友，当然要事先联系一下）发来消息时，向该qq号回复相同的消息。</p>
+</blockquote>
+<p>示例对话（其中“我”为该特定的qq号，bot为你编写的机器人）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">我&gt; 你好</span><br><span class="line">bot&gt; 你好</span><br><span class="line">我&gt; 人类的本质就是复读机</span><br><span class="line">bot&gt; 人类的本质就是复读机</span><br></pre></td></tr></table></figure>
+<h2 id="33-天气助手"><a class="markdownIt-Anchor" href="#33-天气助手"></a> 3.3 天气助手</h2>
+<blockquote>
+<p>(15分) 以上一题的复读机为基础，删去复读功能，改为当有人向机器人发送<code>天气 &lt;城市名&gt;</code>时，从公共api（例如 <em>2.4 参考资料</em> 中的TenApi）获得该城市的天气并返回。这个功能应该包含在最终提交的代码内。</p>
+</blockquote>
+<p>示例对话（只是示例，bot回复的模板由你来决定）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">我&gt; 天气 苏州</span><br><span class="line">bot&gt; 苏州今天的天气是：21-29°C 西南风2级 小雨</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line">我&gt; 天气预报 苏州</span><br><span class="line">bot&gt; </span><br><span class="line">苏州今天的天气是：21-29°C 西南风2级 小雨</span><br><span class="line">明天星期四：21-31°C 东南风 晴</span><br><span class="line">后天星期五：……</span><br><span class="line">…………</span><br></pre></td></tr></table></figure>
+<h2 id="34-定时任务"><a class="markdownIt-Anchor" href="#34-定时任务"></a> 3.4 定时任务</h2>
+<blockquote>
+<p>(20分) 利用<code>asyncio</code>的<code>create_task</code>，让机器人可以定时执行任务。这个功能应该包含在最终提交的代码内。</p>
+</blockquote>
+<p>提示：任务循环不应阻塞正常的消息处理，另建议使用aioschedule包简化任务设置的流程。</p>
+<p>定时任务由你来决定，例如：</p>
+<ul>
+<li>每天晚上8点提醒你去刷leetcode；</li>
+<li>工作日12点-16点每隔一个小时发送补水提醒；</li>
+<li>每隔五分钟向直播平台的api（这个就需要一些爬虫和抓包的技术了）发送请求获得直播间开播情况。如果某个主播开播，则向你发送开播提醒。</li>
+</ul>
+<h2 id="35-小游戏"><a class="markdownIt-Anchor" href="#35-小游戏"></a> 3.5 小游戏</h2>
+<blockquote>
+<p>(20分) 以上一题的天气助手为基础，编写一个单人小游戏，要求能做到在私信中与人互动。这个功能应该包含在最终提交的代码内。</p>
+</blockquote>
+<p>如果你想不到什么单人小游戏，可以实现以下样例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">我&gt; 猜数 100</span><br><span class="line">bot&gt; 开始猜数，目标在0-100之间，请输入你的答案</span><br><span class="line">我&gt; 50</span><br><span class="line">bot&gt; 小了</span><br><span class="line">我&gt; 75</span><br><span class="line">bot&gt; 大了</span><br><span class="line">我&gt; 62</span><br><span class="line">bot&gt; 小了</span><br><span class="line">我&gt; 68</span><br><span class="line">bot&gt; 小了</span><br><span class="line">我&gt; 71</span><br><span class="line">bot&gt; 小了</span><br><span class="line">我&gt; 73</span><br><span class="line">bot&gt; 恭喜你在第6次尝试猜对啦！</span><br></pre></td></tr></table></figure>
+<h2 id="36-自由开发"><a class="markdownIt-Anchor" href="#36-自由开发"></a> 3.6 自由开发</h2>
+<blockquote>
+<p>(30分) 编写代码为机器人添加功能。</p>
+</blockquote>
+<p><em>注：什么功能都行。可以<strong>参考</strong><a target="_blank" rel="noopener" href="https://v2.nonebot.dev/store">nonebot2 的插件列表</a>以获取灵感。</em></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sumsc-caa.github.io/2022/06/05/hackathon2022-online/" title="2022 Hackathon Online" target="_blank" rel="external">https://sumsc-caa.github.io/2022/06/05/hackathon2022-online/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="//github.com/sumsc-caa" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/img/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="//github.com/sumsc-caa" target="_blank"><span class="text-dark">苏州大学计算机爱好者协会（微软学生俱乐部）</span><small class="ml-1x">微软开源学习社群联络社团</small></a></h3>
+        <div>计算机爱好者协会是苏州大学计算机科学与技术学院的学术性社团，为2015年与微软亚洲研究院联合成立的苏州大学微软学生俱乐部，现为微软开源学习社群的联络社团。欢迎加入俱乐部QQ群：497516494 | 关注微信公众号：SUMSTC</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/10/18/techpost-2022-1/" title="技术赋能#1：python的可迭代对象、迭代器与生成器"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/04/28/Pandora-22-5/" title="魔盒挑战 2022.5"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 SUMSC
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

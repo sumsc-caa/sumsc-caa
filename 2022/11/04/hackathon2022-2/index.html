@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>2022 Hackathon: 字符画与康威生命游戏 | SUMSC</title>
+  <meta name="description" content="苏州大学计算机爱好者协会 Hackathon 2022 赛题 以下两题请任选一题完成：  Q1: 字符画  背景 字符画&#x2F;ASCII艺术，是指在计算机中使用字符组成图片的一种艺术形式。其大致可以分为以下几种：   西方式表情符号：受限于ASCII字符集，其组成的图像与表达的意思都较为简单，通常需要旋转90°阅读。   东方式表情符号&#x2F;颜文字：得益于东方语言丰富的字符与标点符号，其在形式和含义上都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022 Hackathon: 字符画与康威生命游戏">
+<meta property="og:url" content="https://sumsc-caa.github.io/2022/11/04/hackathon2022-2/index.html">
+<meta property="og:site_name" content="SUMSC">
+<meta property="og:description" content="苏州大学计算机爱好者协会 Hackathon 2022 赛题 以下两题请任选一题完成：  Q1: 字符画  背景 字符画&#x2F;ASCII艺术，是指在计算机中使用字符组成图片的一种艺术形式。其大致可以分为以下几种：   西方式表情符号：受限于ASCII字符集，其组成的图像与表达的意思都较为简单，通常需要旋转90°阅读。   东方式表情符号&#x2F;颜文字：得益于东方语言丰富的字符与标点符号，其在形式和含义上都">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/hackathon2022f/Brooklyn-Daily-Eagle-1875-01-06.png">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/hackathon2022f/saturn-ascii-i.png">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/hackathon2022f/hatsune_miku_43.png">
+<meta property="og:image" content="https://sumsc-caa.github.io/img/hackathon2022f/helloworld.png">
+<meta property="article:published_time" content="2022-11-04T10:30:03.000Z">
+<meta property="article:modified_time" content="2022-11-03T16:21:02.324Z">
+<meta property="article:author" content="SUMSC">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Hackathon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sumsc-caa.github.io/img/hackathon2022f/Brooklyn-Daily-Eagle-1875-01-06.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sumsc-caa.github.io/2022/11/04/hackathon2022-2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="SUMSC" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="//github.com/sumsc-caa" target="_blank">
+          <img class="img-circle img-rotate" src="/img/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">苏州大学计算机爱好者协会（微软学生俱乐部）</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">微软开源学习社群联络社团</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Suzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-blog">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">
+            
+            <span class="menu-title">技术博客</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-activity">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8">
+            
+            <span class="menu-title">活动</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-github">
+          <a target="_blank" rel="noopener" href="//github.com/sumsc-caa">
+            
+            <span class="menu-title">GitHub</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <span class="menu-title">友情链接</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <span class="menu-title">关于我们</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <div><p>这里是苏州大学计算机爱好者协会（微软学生俱乐部），在这里，你可以看到关于我们的信息以及我们最近的动态。</p><p>欢迎交流与分享经验!</p></div><hr/> <div style="line-height:30px;"> <!-- <h4>🔥 最新活动</h4><div> <div style="line-height:26px;"><p>号外号外！苏州大学计算机爱好者协会<a href="/2022/06/05/hackathon2022-online/" target="_blank">2022“Hackathon：Online”</a>来啦！ <em><a href="https://mp.weixin.qq.com/s/YI0Bjhai6vb4BMhXu6cGUg" target="_blank">活动推送传送门</a></em> <p>本次Hackathon的形式不同以往，将以线上的方式进行。本次活动将在6月5日~6月12日展开，历时7天，给予各位同学更充足的时间和更灵活的安排来呈现出一个创意满满的作品！</p> </p><p>本次Hackathon以“聊天机器人”为主题，在6月5日将由主持人为大家介绍本次Hackathon的题目，并进行相关技术的教学。比赛期间也会有相关技术成员在群内为大家答疑解惑。在比赛进程的最后一天，将由各小组成员展示自己的精彩作品，还有丰富奖品等你来拿！ </p><p>还在犹豫什么？快加入QQ群488140447，在头脑风暴中挑战自我吧！<p></div><hr/> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a><span class="category-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hackathon/" style="font-size: 13.67px;">Hackathon</a> <a href="/tags/Pandora/" style="font-size: 13.33px;">Pandora</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13px;">前端</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-2/" class="title">2022 Hackathon: 字符画与康威生命游戏</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-asciiart/" class="title">2022 Hackathon: 字符画 示例程序与帮助</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:02.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-gameoflife/" class="title">2022 Hackathon: 康威生命游戏 示例程序与使用说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:01.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/18/techpost-2022-1/" class="title">技术赋能#1：python的可迭代对象、迭代器与生成器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-18T04:23:48.000Z" itemprop="datePublished">2022-10-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/06/05/hackathon2022-online/" class="title">2022 Hackathon Online</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-06-05T04:00:00.000Z" itemprop="datePublished">2022-06-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-hackathon2022-2" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      2022 Hackathon: 字符画与康威生命游戏
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/11/04/hackathon2022-2/" class="article-date">
+	  <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Hackathon/" rel="tag">Hackathon</a>, <a class="article-tag-link-link" href="/tags/Python/" rel="tag">Python</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/11/04/hackathon2022-2/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.9k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="苏州大学计算机爱好者协会-hackathon-2022-赛题"><a class="markdownIt-Anchor" href="#苏州大学计算机爱好者协会-hackathon-2022-赛题"></a> 苏州大学计算机爱好者协会 Hackathon 2022 赛题</h1>
+<p>以下两题请<strong>任选一题完成</strong>：</p>
+<h2 id="q1-字符画"><a class="markdownIt-Anchor" href="#q1-字符画"></a> Q1: 字符画</h2>
+<h3 id="背景"><a class="markdownIt-Anchor" href="#背景"></a> 背景</h3>
+<p>字符画/ASCII艺术，是指在计算机中使用字符组成图片的一种艺术形式。其大致可以分为以下几种：</p>
+<ol>
+<li>
+<p>西方式表情符号：受限于ASCII字符集，其组成的图像与表达的意思都较为简单，通常需要旋转90°阅读。</p>
+</li>
+<li>
+<p>东方式表情符号/颜文字：得益于东方语言丰富的字符与标点符号，其在形式和含义上都较前者更加复杂。</p>
+<blockquote>
+<p>(⁄ ⁄•⁄ω⁄•⁄ ⁄)  (≧∇≦)/  ∩(·ω·)∩  (Ｔ▽Ｔ) (<sup>._.</sup>)~<br />
+(=<sup>・・</sup>=)  (－‸ლ)  （ ﾟ Дﾟ)  (づ￣ ³￣)づ<br />
+(ノಠ益ಠ)ノ彡┻━┻    ┬─┬ノ( º _ ºノ)</p>
+</blockquote>
+</li>
+</ol>
+<p>以上二者都是单行的字符画，常在社交平台上的日常对话中被使用（不过近几年国内外emoji和表情包等图片式表情符号的发展使它们日渐式微）。</p>
+<ol start="3">
+<li>打字机风格/打字机艺术（Typewriter Art）：这是最早的字符画之一，下图中展示了1875年1月6日美国一份报纸上刊登的广告（来源：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ASCII_art">wikipedia - ASCII art</a>），它们都利用打字机艺术使广告引人注目。</li>
+</ol>
+<div style="text-align:center"><img src="/img/hackathon2022f/Brooklyn-Daily-Eagle-1875-01-06.png" style="width:50%; min-width:300px" /></div>
+<ol start="4">
+<li>灰度字符画：即按照相同大小的不同ASCII字符所占面积组成灰度级，并用这些灰度级组合成一张图片。下图为这种形式的土星（来源：<a target="_blank" rel="noopener" href="https://scipython.com/blog/ascii-art/">ASCII art</a>）。在支持对单个字符指定颜色的软件内，这种方式也可以被用来制作彩色字符画。</li>
+</ol>
+<div style="text-align:center"><img src="/img/hackathon2022f/saturn-ascii-i.png" style="width:50%; min-width:300px" /></div>
+<ol start="5">
+<li>矢量字符画：这些字符画通常会在图中加入一些线形字符来对线条作视觉引导，并使用灰度字符画的方式对色块进行填充，下图为这种形式的初音未来（来源：<a target="_blank" rel="noopener" href="http://anime.en.utf8art.com/arc/hatsune_miku_43.html">Ascii Art Archives for Recycle</a>）。</li>
+</ol>
+<div style="text-align:center"><img src="/img/hackathon2022f/hatsune_miku_43.png" style="width:50%; min-width:300px" /></div>
+<p>此外，这种形式也被用于制作命令行界面中展示的标题文字，且有各种风格。例如（来源：<a target="_blank" rel="noopener" href="https://patorjk.com/software/taag">Text to ASCII Art Generator</a>）：</p>
+<div style="text-align:center"><img src="/img/hackathon2022f/helloworld.png" style="width:50%; min-width:300px" /></div>
+<h3 id="题目"><a class="markdownIt-Anchor" href="#题目"></a> 题目</h3>
+<ol>
+<li>绘制一幅字符画，或者选择一幅你们喜欢的图片并将其转化为字符画。</li>
+<li>编写程序，使其能自动将文字或图片转化为字符画，并尽可能优化结果的观感。你可以选择完善<a href="/2022/11/04/hackathon2022-asciiart">我们提供的示例程序</a>。</li>
+<li>【可选】改进程序，将生成的字符画渲染为 PNG/JPEG（位图）、html（网页）、pdf（文档）或svg（矢量图）等格式，使其在不同环境的呈现效果一致。</li>
+<li>【可选】改进程序，使其能逐帧处理视频，并将结果渲染到视频内。</li>
+</ol>
+<p>关于本题的帮助请参见：<a href="/2022/11/04/hackathon2022-asciiart">2022 Hackathon: 字符画 示例程序与帮助</a></p>
+<h3 id="参考资料"><a class="markdownIt-Anchor" href="#参考资料"></a> 参考资料</h3>
+<p>下面是可能有用的资料：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://emojipedia.org/zh/">Emojipedia</a>（测试图片可以从这里获取）</li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E6%96%B9%E5%A1%8A%E5%85%83%E7%B4%A0">方块元素 - 维基百科</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/ASCII%E8%89%BA%E6%9C%AF">ASCII艺术 - 维基百科</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%AD%89%E5%AE%BD%E5%AD%97%E4%BD%93">等宽字体 - 维基百科</a></li>
+<li><a target="_blank" rel="noopener" href="https://pillow.readthedocs.io/en/stable/index.html">Pillow 库官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tartley/colorama">colorama 库 | Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mozman/svgwrite">svgwrite 库 | Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/argparse.html">argparse - Python 3.11 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://patorjk.com/software/taag/">Text to ASCII Art Generator</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jave.de/">Jave：使用Java编写的字符画编辑器</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML">HTML（超文本标记语言） | MDN</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Learn/HTML/Introduction_to_HTML">HTML 简介 - 学习 Web 开发 | MDN</a></li>
+</ol>
+<h2 id="q2-康威生命游戏"><a class="markdownIt-Anchor" href="#q2-康威生命游戏"></a> Q2: 康威生命游戏</h2>
+<h3 id="背景-2"><a class="markdownIt-Anchor" href="#背景-2"></a> 背景</h3>
+<p>康威生命游戏（Conway’s Game of Life），又称康威生命棋，是英国数学家 <strong>John Horton Conway</strong> 在1970年发明的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E7%B4%B0%E8%83%9E%E8%87%AA%E5%8B%95%E6%A9%9F">元胞自动机</a>。康威生命游戏在充分大的棋盘（模拟世界）上运行，棋盘的每个格子被称为一个细胞，对于棋盘内的每个细胞，只有五条规则：</p>
+<ul>
+<li>每个细胞有存活与死亡两种状态，每个细胞只与以自身为中心的周围<strong>八格</strong>细胞产生互动；</li>
+<li>当前细胞为存活状态时，当周围的存活细胞低于2个时（不包含2个），该细胞变成死亡状态（模拟生命数量稀少）；</li>
+<li>当前细胞为存活状态时，当周围有2个或3个存活细胞时，该细胞保持原样；</li>
+<li>当前细胞为存活状态时，当周围有超过3个存活细胞时，该细胞变成死亡状态（模拟生命数量过多）；</li>
+<li>当前细胞为死亡状态时，当周围有3个存活细胞时，该细胞变成存活状态（模拟繁殖）。</li>
+</ul>
+<p>整个游戏从<code>t=0</code>开始模拟，每一步模拟会对棋盘上所有细胞运用上述五条规则，得到下一步的棋盘。在这个游戏中，玩家是这个模拟世界里的神，可以旁观模拟世界内细胞的发展、随意向棋盘中添加、删除细胞，甚至是通过编程改变模拟世界的规则。</p>
+<h3 id="题目-2"><a class="markdownIt-Anchor" href="#题目-2"></a> 题目</h3>
+<p>我们编写了一个康威生命游戏的模拟程序，你可以在比赛中使用它，也可以随意更改代码实现你期望的效果。关于代码与使用说明请见：<a href="/2022/11/04/hackathon2022-gameoflife/">2022 Hackathon: 康威生命游戏 示例程序与使用说明</a></p>
+<p>除了我们编写的模拟程序之外，你也可以使用其它模拟程序，例如：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://playgameoflife.com/">https://playgameoflife.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://conwaylife.com/">https://conwaylife.com/</a></li>
+<li><a target="_blank" rel="noopener" href="https://wavjaby.github.io/GameOfLife/">https://wavjaby.github.io/GameOfLife/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/thearn/game-of-life/">https://github.com/thearn/game-of-life/</a></li>
+</ul>
+<p>以下是你在本题可以尝试探索的几个方向：</p>
+<ol>
+<li>游玩康威生命游戏，并尝试在其中创建能稳定存在并增殖的生命（可以使用已发现的模式，见 <a target="_blank" rel="noopener" href="https://conwaylife.com/wiki/">https://conwaylife.com/wiki/</a> ）。</li>
+<li>尝试构建高生存力的生命体，即最大化<u>一定时间内增殖的细胞数</u>与<u>初始细胞数</u>之比。</li>
+<li>编写程序，修改或添加生命游戏的规则，例如：
+<ul>
+<li>改变基础规则的阈值；</li>
+<li>扩大单个细胞的互动范围；</li>
+<li>每过一定时间随机消灭世界内一半的活细胞；</li>
+</ul>
+</li>
+<li>改进程序或为程序添加功能，例如：
+<ul>
+<li>利用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E6%96%B9%E5%A1%8A%E5%85%83%E7%B4%A0">方块元素</a>中的半高方块代替两个全高方块（也就是每一行字符对应模拟世界里的两行细胞），让程序可以在相同大小的命令行界面中展示四倍的细胞；</li>
+<li>活细胞死亡后在地图上留下标记；</li>
+<li>跟踪种群（初始状态聚集在一起的一群细胞）的发展，并使用颜色（<a target="_blank" rel="noopener" href="https://github.com/tartley/colorama">colorama 库</a>）标记不同种群（通过规则5诞生的细胞的颜色与周围细胞中占多数的颜色相同），这样可以展示不同种群争夺生存资源（地盘）的过程。</li>
+</ul>
+</li>
+</ol>
+<h3 id="参考资料-2"><a class="markdownIt-Anchor" href="#参考资料-2"></a> 参考资料</h3>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://conwaylife.com/wiki/">LifeWiki</a></li>
+<li>Numpy 官方文档：<a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/">英文</a> <a target="_blank" rel="noopener" href="https://www.numpy.org.cn/reference/">中文</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/argparse.html">argparse - Python 3.11 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tartley/colorama">colorama 库 | Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway’s Game of Life - Wikipedia</a></li>
+<li>【科普】<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45026142">康威生命游戏——孤独会致命，拥挤也一样 - 知乎</a></li>
+</ol>
+<h2 id="比赛规则"><a class="markdownIt-Anchor" href="#比赛规则"></a> 比赛规则</h2>
+<p>本次比赛你可以查阅任意资料，但是请尽可能避免直接照搬网上的代码的情况。</p>
+<p>请在星期日（7月6日）15:00之前完成你们的作品，期间你<strong>可以</strong>（非强制）在比赛场地（博远楼104-107）讨论交流与编写代码，会有工作人员现场负责技术指导。如果遇到了技术问题，你可以在比赛场地寻找技术指导，或是在比赛群内询问。7月6日15:00之后是作品展示环节，届时各组将上台展示作品、运行代码，并由评委对作品打分，打分的结果将作为最终成绩。</p>
+<p>比赛期间请密切关注比赛群内的消息，关于比赛的任何消息我们都会在群内通知。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sumsc-caa.github.io/2022/11/04/hackathon2022-2/" title="2022 Hackathon: 字符画与康威生命游戏" target="_blank" rel="external">https://sumsc-caa.github.io/2022/11/04/hackathon2022-2/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="//github.com/sumsc-caa" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/img/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="//github.com/sumsc-caa" target="_blank"><span class="text-dark">苏州大学计算机爱好者协会（微软学生俱乐部）</span><small class="ml-1x">微软开源学习社群联络社团</small></a></h3>
+        <div>计算机爱好者协会是苏州大学计算机科学与技术学院的学术性社团，为2015年与微软亚洲研究院联合成立的苏州大学微软学生俱乐部，现为微软开源学习社群的联络社团。欢迎加入俱乐部QQ群：497516494 | 关注微信公众号：SUMSTC</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2022/11/04/hackathon2022-asciiart/" title="2022 Hackathon: 字符画 示例程序与帮助"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 SUMSC
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>

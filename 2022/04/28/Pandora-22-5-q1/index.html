@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>魔盒挑战 2022.5 简单LISP解释器 | SUMSC</title>
+  <meta name="description" content="一份简易的LISP（Scheme）教程 相信不少人对LISP这门编程语言有所耳闻，又常常听说这门语言“抽象难学”。但实际上LISP的语法规则相当简单，甚至只有几个最基本的规则。下面就拿LISP的一种经典方言Scheme举例： 1(+ 1 2) 上面的代码很好理解。(+ a b)在这里是一个表达式，可以理解为一个函数，接受两个参数，并且返回它们之和，(+ 1 2)的结果就是3，同理(* 2 3)的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="魔盒挑战 2022.5 简单LISP解释器">
+<meta property="og:url" content="https://sumsc-caa.github.io/2022/04/28/Pandora-22-5-q1/index.html">
+<meta property="og:site_name" content="SUMSC">
+<meta property="og:description" content="一份简易的LISP（Scheme）教程 相信不少人对LISP这门编程语言有所耳闻，又常常听说这门语言“抽象难学”。但实际上LISP的语法规则相当简单，甚至只有几个最基本的规则。下面就拿LISP的一种经典方言Scheme举例： 1(+ 1 2) 上面的代码很好理解。(+ a b)在这里是一个表达式，可以理解为一个函数，接受两个参数，并且返回它们之和，(+ 1 2)的结果就是3，同理(* 2 3)的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-28T07:39:36.000Z">
+<meta property="article:modified_time" content="2022-11-01T03:24:16.387Z">
+<meta property="article:author" content="SUMSC">
+<meta property="article:tag" content="Pandora">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sumsc-caa.github.io/2022/04/28/Pandora-22-5-q1/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="SUMSC" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="//github.com/sumsc-caa" target="_blank">
+          <img class="img-circle img-rotate" src="/img/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">苏州大学计算机爱好者协会（微软学生俱乐部）</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">微软开源学习社群联络社团</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Suzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-blog">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">
+            
+            <span class="menu-title">技术博客</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-activity">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8">
+            
+            <span class="menu-title">活动</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-github">
+          <a target="_blank" rel="noopener" href="//github.com/sumsc-caa">
+            
+            <span class="menu-title">GitHub</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <span class="menu-title">友情链接</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <span class="menu-title">关于我们</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <div><p>这里是苏州大学计算机爱好者协会（微软学生俱乐部），在这里，你可以看到关于我们的信息以及我们最近的动态。</p><p>欢迎交流与分享经验!</p></div><hr/> <div style="line-height:30px;"> <!-- <h4>🔥 最新活动</h4><div> <div style="line-height:26px;"><p>号外号外！苏州大学计算机爱好者协会<a href="/2022/06/05/hackathon2022-online/" target="_blank">2022“Hackathon：Online”</a>来啦！ <em><a href="https://mp.weixin.qq.com/s/YI0Bjhai6vb4BMhXu6cGUg" target="_blank">活动推送传送门</a></em> <p>本次Hackathon的形式不同以往，将以线上的方式进行。本次活动将在6月5日~6月12日展开，历时7天，给予各位同学更充足的时间和更灵活的安排来呈现出一个创意满满的作品！</p> </p><p>本次Hackathon以“聊天机器人”为主题，在6月5日将由主持人为大家介绍本次Hackathon的题目，并进行相关技术的教学。比赛期间也会有相关技术成员在群内为大家答疑解惑。在比赛进程的最后一天，将由各小组成员展示自己的精彩作品，还有丰富奖品等你来拿！ </p><p>还在犹豫什么？快加入QQ群488140447，在头脑风暴中挑战自我吧！<p></div><hr/> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a><span class="category-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hackathon/" style="font-size: 13.67px;">Hackathon</a> <a href="/tags/Pandora/" style="font-size: 13.33px;">Pandora</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13px;">前端</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-2/" class="title">2022 Hackathon: 字符画与康威生命游戏</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-asciiart/" class="title">2022 Hackathon: 字符画 示例程序与帮助</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:02.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-gameoflife/" class="title">2022 Hackathon: 康威生命游戏 示例程序与使用说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:01.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/18/techpost-2022-1/" class="title">技术赋能#1：python的可迭代对象、迭代器与生成器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-18T04:23:48.000Z" itemprop="datePublished">2022-10-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/06/05/hackathon2022-online/" class="title">2022 Hackathon Online</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-06-05T04:00:00.000Z" itemprop="datePublished">2022-06-05</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Pandora-22-5-q1" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      魔盒挑战 2022.5 简单LISP解释器
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/04/28/Pandora-22-5-q1/" class="article-date">
+	  <time datetime="2022-04-28T07:39:36.000Z" itemprop="datePublished">2022-04-28</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Pandora/" rel="tag">Pandora</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/04/28/Pandora-22-5-q1/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 5.8k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 21(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="一份简易的lispscheme教程"><a class="markdownIt-Anchor" href="#一份简易的lispscheme教程"></a> 一份简易的LISP（Scheme）教程</h2>
+<p>相信不少人对LISP这门编程语言有所耳闻，又常常听说这门语言“抽象难学”。但实际上LISP的语法规则相当简单，甚至只有几个最基本的规则。下面就拿LISP的一种经典方言Scheme举例：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">+</span></span> <span class="number">1</span> <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>上面的代码很好理解。<code>(+ a b)</code>在这里是一个<strong>表达式</strong>，可以理解为一个函数，接受两个参数，并且返回它们之和，<code>(+ 1 2)</code>的结果就是<code>3</code>，同理<code>(* 2 3)</code>的结果是<code>6</code>，<code>(- 1 2)</code>的结果是<code>-1</code>……</p>
+<p>这些表达式也可以组合起来：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">+</span></span> (<span class="name"><span class="built_in">*</span></span> <span class="number">3</span> <span class="number">5</span>) (<span class="name"><span class="built_in">-</span></span> <span class="number">10</span> <span class="number">6</span>))</span><br></pre></td></tr></table></figure>
+<p>上面这个表达式的值就是<code>19</code>，这相当于<code>(3 * 5) + (10 - 6)</code>。</p>
+<p>我们常常将LISP表达式通过缩进更清晰地表示：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">+</span></span> (<span class="name"><span class="built_in">*</span></span> <span class="number">3</span></span><br><span class="line">      (<span class="name"><span class="built_in">+</span></span> (<span class="name"><span class="built_in">*</span></span> <span class="number">2</span> <span class="number">4</span>)</span><br><span class="line">         (<span class="name"><span class="built_in">+</span></span> <span class="number">3</span> <span class="number">5</span>)))</span><br><span class="line">   (<span class="name"><span class="built_in">+</span></span> (<span class="name"><span class="built_in">-</span></span> <span class="number">10</span> <span class="number">7</span>)</span><br><span class="line">      <span class="number">6</span>))</span><br></pre></td></tr></table></figure>
+<p>上面这段代码相当于<code>(3 * ((2 * 4) + (3 + 5))) + ((10 - 7) + 6)</code>，值是<code>57</code>.</p>
+<p>除了基本的加减乘除外，LISP还有一些特殊的关键字，例如<code>define</code>可以用来<strong>定义变量</strong>：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> size <span class="number">2</span>)</span><br><span class="line">(<span class="name"><span class="built_in">*</span></span> <span class="number">5</span> size)</span><br></pre></td></tr></table></figure>
+<p>这里先定义了一个值为<code>2</code>的变量<code>size</code>，然后将它乘以<code>5</code>，最终结果是<code>10</code>.</p>
+<p>更有意思的是，<code>define</code>还可以用来<strong>定义自己的函数</strong>：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">square</span> x) (<span class="name"><span class="built_in">*</span></span> x x))</span><br></pre></td></tr></table></figure>
+<p>这里定义了一个名为<code>square</code>的函数，它接收一个参数<code>x</code>，并返回它的平方。</p>
+<p>我们刚才定义的<code>square</code>函数可以这样调用：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> size <span class="number">3</span>)</span><br><span class="line">(<span class="name">square</span> size)</span><br></pre></td></tr></table></figure>
+<p>这段代码的返回值是<code>9</code>.</p>
+<p>下面是<strong>define函数定义</strong>的一般形式：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">&lt;函数名&gt;</span> &lt;参数1&gt; &lt;参数2&gt; &lt;参数3&gt; ...) &lt;具体实现...&gt;)</span><br></pre></td></tr></table></figure>
+<p>下面定义一个稍微复杂的函数<code>sum-of-squares</code>，接收两个参数，返回它们的平方和：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">sum-of-squares</span> x y)</span><br><span class="line">  (<span class="name"><span class="built_in">+</span></span> (<span class="name">square</span> x) (<span class="name">square</span> y))</span><br></pre></td></tr></table></figure>
+<p>注意到，这里使用了刚才定义的<code>square</code>函数。上面这段代码应该很容易理解。下面我们使用该函数：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">sum-of-squares</span> <span class="number">3</span> <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>这段代码的返回值是<code>25</code>，即<code>(3 * 3) + (4 * 4)</code>的值.</p>
+<p>除了<code>define</code>之外，LISP也有类似<code>if ... else ...</code>的<strong>条件表达式</strong>，在Scheme中它被这样实现：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">abs</span></span> x)</span><br><span class="line">  (<span class="name"><span class="built_in">cond</span></span> ((<span class="name"><span class="built_in">&gt;</span></span> x <span class="number">0</span>) x)</span><br><span class="line">        ((<span class="name"><span class="built_in">=</span></span> x <span class="number">0</span>) <span class="number">0</span>)</span><br><span class="line">        ((<span class="name"><span class="built_in">&lt;</span></span> x <span class="number">0</span>) (<span class="name"><span class="built_in">-</span></span> x))))</span><br></pre></td></tr></table></figure>
+<p>上面的代码定义了一个<code>abs</code>函数，用来返回某个数的绝对值。这里使用了<code>cond</code>做条件判断。上面的代码应该也不难理解。<strong>cond条件表达式</strong>的一般形式如下：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">cond</span></span> (<span class="name">&lt;条件1&gt;</span> &lt;返回值1&gt;)</span><br><span class="line">      (<span class="name">&lt;条件2&gt;</span> &lt;返回值2&gt;)</span><br><span class="line">      (<span class="name">&lt;条件3&gt;</span> &lt;返回值3&gt;)</span><br><span class="line">      ...)</span><br></pre></td></tr></table></figure>
+<p>同时<code>cond</code>表达式也提供了一个可选的<code>else</code>，用来在所有条件都不成立时返回值：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">abs</span></span> x)</span><br><span class="line">  (<span class="name"><span class="built_in">cond</span></span> ((<span class="name"><span class="built_in">&lt;</span></span> x <span class="number">0</span>) (<span class="name"><span class="built_in">-</span></span> x))</span><br><span class="line">        (<span class="name"><span class="built_in">else</span></span> x)))</span><br></pre></td></tr></table></figure>
+<p>此外，Scheme也提供了简化的<code>cond</code>，即<code>if</code>：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">abs</span></span> x)</span><br><span class="line">  (<span class="name"><span class="built_in">if</span></span> (<span class="name"><span class="built_in">&lt;</span></span> x <span class="number">0</span>)</span><br><span class="line">      (<span class="name"><span class="built_in">-</span></span> x)</span><br><span class="line">      x))</span><br></pre></td></tr></table></figure>
+<p>上面的代码也很好理解。<code>if</code>后面跟的第一个参数是条件，条件应该是一个返回布尔值的函数，这里的<code>(&lt; x 0)</code>表示条件&quot;若<code>x</code>小于<code>0</code>&quot;；第二个参数是当条件成立时的返回值，也就是<code>x</code>小于<code>0</code>时返回<code>-x</code>；第三个参数是当条件不成立时的返回值，也就是当<code>x</code>大于等于<code>0</code>时返回<code>x</code>。</p>
+<p>下面是<strong>if条件表达式</strong>的一般形式：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">if</span></span> &lt;条件&gt; &lt;条件成立时的返回值&gt; &lt;条件不成立时的返回值&gt;)</span><br></pre></td></tr></table></figure>
+<p>同时，Scheme也包含Python中的<code>and</code>、<code>or</code>、<code>not</code>，而且它们也是<strong>惰性求值</strong>的：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">and</span></span> &lt;e1&gt; &lt;e2&gt; &lt;e3&gt; ...)</span><br><span class="line">(<span class="name"><span class="built_in">or</span></span> &lt;e1&gt; &lt;e2&gt; &lt;e3&gt; ...)</span><br><span class="line">(<span class="name"><span class="built_in">not</span></span> &lt;e&gt;)</span><br></pre></td></tr></table></figure>
+<p>对于<code>and</code>，Scheme解释器从左到右一个个地求值<code>&lt;e&gt;</code>，如果某个<code>&lt;e&gt;</code>求值得到假，这一and表达式的值就是假，后面那些<code>&lt;e&gt;</code>自然也不用再求值了。如果所有的<code>&lt;e&gt;</code>都求出真值，这一and表达式的值就是最后那个<code>&lt;e&gt;</code>的值。</p>
+<p>同理，对于<code>or</code>，Scheme解释器从左到右一个个地求值<code>&lt;e&gt;</code>，如果某个<code>&lt;e&gt;</code>求值得到真，这一or表达式的值就是真，后面那些<code>&lt;e&gt;</code>自然也不用再求值了。如果所有的<code>&lt;e&gt;</code>都求出假值，这一or表达式的值就是最后那个<code>&lt;e&gt;</code>的值。</p>
+<p>对于<code>not</code>，如果<code>&lt;e&gt;</code>求出的值是假，not表达式的值就是真，否则其值为假。</p>
+<p>作为示例，下面定义大于等于函数<code>&gt;=</code>：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">&gt;=</span></span> x y)</span><br><span class="line">  (<span class="name"><span class="built_in">or</span></span> (<span class="name"><span class="built_in">&gt;</span></span> x y) (<span class="name"><span class="built_in">=</span></span> x y)))</span><br></pre></td></tr></table></figure>
+<p>或者可以这么定义：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">&gt;=</span></span> x y)</span><br><span class="line">  (<span class="name"><span class="built_in">not</span></span> (<span class="name"><span class="built_in">&lt;</span></span> x y))</span><br></pre></td></tr></table></figure>
+<p>实际上，<strong>到此为止，所有基本的Scheme语法就解释完毕了，已经可以开始编写图灵完备的程序了</strong>。仅仅掌握这些知识就能写代码了，简直简单到不可思议……<strong>但是等一下，循环呢？</strong></p>
+<p><strong>在LISP中，循环的实现方式是递归</strong>。Lisp没有常规的for/while循环，一切类似的操作都可以使用递归实现。下面通过已经介绍的这些语法，实现一个计算阶乘的函数<code>factorial</code>：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">factorial</span> n)</span><br><span class="line">  (<span class="name"><span class="built_in">if</span></span> (<span class="name"><span class="built_in">=</span></span> n <span class="number">1</span>)</span><br><span class="line">      <span class="number">1</span></span><br><span class="line">      (<span class="name"><span class="built_in">*</span></span> n (<span class="name">factorial</span> (<span class="name"><span class="built_in">-</span></span> n <span class="number">1</span>)))))</span><br></pre></td></tr></table></figure>
+<p>可以看到，这里使用了递归的思想：若<code>n</code>是<code>1</code>，则直接返回<code>1</code>，否则返回<code>n</code>乘以<code>factorial(n-1)</code>。计算阶乘就是这么简单。</p>
+<p>下面我们尝试着综合运用学到的知识，实现一个求幂的函数。相比于上面实现阶乘的函数，这里的求幂函数使用了迭代的思想，所以会稍微复杂一些，可能需要花一点时间去理解，你也许需要在草稿纸上动手画一画示意图，但这里用到的知识完全没有超出上面介绍的范围：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">expt</span></span> b n)</span><br><span class="line">  (<span class="name">expt-iter</span> b n <span class="number">1</span>))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">expt-iter</span> b counter product)</span><br><span class="line">  (<span class="name"><span class="built_in">if</span></span> (<span class="name"><span class="built_in">=</span></span> counter <span class="number">0</span>)</span><br><span class="line">      product</span><br><span class="line">      (<span class="name">expt-iter</span> b</span><br><span class="line">                 (<span class="name"><span class="built_in">-</span></span> counter <span class="number">1</span>)</span><br><span class="line">                 (<span class="name"><span class="built_in">*</span></span> b product))))</span><br></pre></td></tr></table></figure>
+<p>不过，这种求幂的方法未免有些低效。我们知道<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">b^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span>可以拆分成<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>4</mn></msup><mo>∗</mo><msup><mi>b</mi><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">b^4*b^4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span>，而<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">b^4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span>又可以继续拆分成<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>∗</mo><msup><mi>b</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">b^2*b^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>，而<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">b^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>就是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>∗</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">b*b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span></span></span></span>，只需通过这么三步就可以计算得到结果。而上面的代码如果要计算<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">b^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span>，则只是一步步将结果乘以<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span></span></span></span>，计算了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span></span></span></span>次。于是我们可以这样实现一个快速求幂函数：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">fast-expt</span> b n)</span><br><span class="line">  (<span class="name"><span class="built_in">cond</span></span> ((<span class="name"><span class="built_in">=</span></span> n <span class="number">0</span>) <span class="number">1</span>)</span><br><span class="line">        ((<span class="name"><span class="built_in">even?</span></span> n) (<span class="name">square</span> (<span class="name">fast-expt</span> b (<span class="name"><span class="built_in">/</span></span> n <span class="number">2</span>))))</span><br><span class="line">        (<span class="name"><span class="built_in">else</span></span> (<span class="name"><span class="built_in">*</span></span> b (<span class="name">fast-expt</span> b (<span class="name"><span class="built_in">-</span></span> n <span class="number">1</span>))))))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">even?</span></span> n)</span><br><span class="line">  (<span class="name"><span class="built_in">=</span></span> (<span class="name"><span class="built_in">remainder</span></span> n <span class="number">2</span>) <span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+<p>上面代码里的<code>remainder</code>表示求余，相当于Python中的<code>%</code>符号。</p>
+<h2 id="题目"><a class="markdownIt-Anchor" href="#题目"></a> 题目</h2>
+<p>好了，通过上面的教程，你应当已经基本理解Scheme的语法了。这些语法本质上非常简单，而且LISP独特的语法使得这些语法解析起来非常简单。你可能会认为实现一个Scheme解释器非常复杂，但实际上如果只需要实现上面这些简单的功能，几十行Python代码就可以做到，你可以试试看。事实上，目前速度最快并且进行高度优化的一个完整Scheme解释器&quot;Chez Scheme&quot;也只用了不到一千行C语言代码，由此可见Lisp的实现是多么简单。</p>
+<p>你只需要编写一个Python版本的Scheme解释器（当然，如果你乐意，也可以使用其它语言），<strong>这个解释器只需要实现上面提到的最基本的语法</strong>。它接受一个字符串，也就是Scheme代码，返回这段代码的执行结果。你的脚本应当可以通过命令行进行交互，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">python test.py <span class="string">&quot;(define (factorial n) (if (= n 1) 1 (* n (factorial (- n 1))))) (factorial 5)&quot;</span></span></span><br><span class="line">120</span><br></pre></td></tr></table></figure>
+<p>或者，这个Scheme解释器可以读取一个文本文件，执行其中的Scheme代码。例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt; </span><span class="language-bash">python test.py expt.txt</span></span><br><span class="line">256</span><br></pre></td></tr></table></figure>
+<p>下面是上面示例中expt.txt的内容：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name"><span class="built_in">expt</span></span> b n)</span><br><span class="line">  (<span class="name">expt-iter</span> b n <span class="number">1</span>))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">expt-iter</span> b counter product)</span><br><span class="line">  (<span class="name"><span class="built_in">if</span></span> (<span class="name"><span class="built_in">=</span></span> counter <span class="number">0</span>)</span><br><span class="line">      product</span><br><span class="line">      (<span class="name">expt-iter</span> b</span><br><span class="line">                 (<span class="name"><span class="built_in">-</span></span> counter <span class="number">1</span>)</span><br><span class="line">                 (<span class="name"><span class="built_in">*</span></span> b product))))</span><br><span class="line">(<span class="name"><span class="built_in">expt</span></span> <span class="number">2</span> <span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+<p>在这里给出一个基本的Python代码框架，它接收一个文件名，读取并解析该文件中的Scheme代码，并打印结果到终端（不过如果你喜欢，自然也可以不按这个框架来写）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment"># -*-coding:utf-8-*-</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_code_string</span>(<span class="params">s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    args = sys.argv</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(args) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> TypeError(<span class="string">&#x27;interpreter takes exactly one argument (0 given)&#x27;</span>)</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(args) &gt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">raise</span> TypeError(<span class="string">f&#x27;interpreter takes exactly one argument (<span class="subst">&#123;<span class="built_in">len</span>(args) - <span class="number">1</span>&#125;</span> given)&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    filepath = args[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filepath, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        s = f.read()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(process_code_string(s))</span><br></pre></td></tr></table></figure>
+<p>解释器的核心代码应该都包括在process_code_string这一函数中。这里省略了该函数的实现，因为这显然是需要你自己去完成的。</p>
+<p><strong>具体来说，你需要实现以下Scheme语法</strong>：</p>
+<ul>
+<li>实现基本的数据类型（数字及布尔值）</li>
+<li>基本组合式，例如加减乘除运算、取负数、取余（remainder）、求商（quotient）、开方（sqrt）、判断相等/大于/小于等。如果你愿意实现一个更完善的解释器，可以考虑加入sin、cos、tan、asin、acos、atan、min、max、abs、square、exp、expt、log等内置函数</li>
+<li>变量及函数定义（通过define）。或者你也可以通过lambda块的方式实现函数定义（你可以自行了解相关资料）</li>
+<li>cond条件表达式，需要包含else的实现，并且需要包含and/or/not。你实现的cond表达式应当是惰性求值的</li>
+<li>（可选）实现if表达式。由于if表达式实质上是对cond的简化，因此这并不是必须实现的</li>
+<li>递归调用函数</li>
+</ul>
+<p><strong>下面是详细的评分标准（满分100分）：</strong></p>
+<ul>
+<li>实现基本组合式求值与数字类型（例如<code>(+ 1 2)</code>）—— 15分</li>
+<li>实现布尔类型（<code>#f</code>和<code>#t</code>） —— 5分</li>
+<li>实现常见运算（加减乘除、取余、开方、相等/大于/小于判断等）—— 10分</li>
+<li>实现变量定义 —— 15分</li>
+<li>实现cond条件表达式（if表达式可不实现）—— 10分</li>
+<li>实现函数定义（define或lambda块，可挑选任意一种实现方式） —— 20分</li>
+<li>实现函数的递归调用 —— 15分</li>
+<li>其他分数（根据实现方式、逻辑结构、代码规范等给出的主观综合评分）—— 10分</li>
+</ul>
+<p><strong>你需要在附带的文档中给出你实现Scheme解释器的过程，使用了什么样的思路，并给出<em>示例代码</em>和<em>运行结果</em>。此外，你还需要给出附有适当注释的解释器源代码。</strong></p>
+<p><strong>在完成这一题目后（即使你仅仅完成了一小部分也没有关系），请将代码及文档发送到邮箱<a href="mailto:gaoge011022@163.com">gaoge011022@163.com</a>，我们会尽快为题目打分，给出结果。</strong>当然了，如果你不仅仅满足于此，你也可以考虑继续实现下面的”进阶“甚至“挑战”任务，会有加分。</p>
+<p><strong>提示</strong>：如果你希望高效地实现这个解释器，可能会需要用到关于<code>抽象语法树(Abstract Syntax Tree)</code>的知识，这是一种简单的树状数据结构，并且与Lisp语法的相性非常好。不过，如果你不愿那么深入，直接用<code>正则表达式</code>甚至通过.replace()和.split()分割字符串也能实现一个不错的Scheme解释器。</p>
+<p><strong>提示2</strong>：如果你希望能够实际体验一下编写Scheme代码，你可以在<a target="_blank" rel="noopener" href="https://github.com/cisco/ChezScheme/releases/download/v9.5.6/ChezScheme9.5.6.exe">Chez Scheme的官方网站</a>上下载安装一个现成的Scheme解释器用来体验一下。在安装完成后，你的电脑上将会出现Chez Scheme的程序，运行之后会弹出一个交互式的命令行窗口，你可以在这里运行你的Scheme代码。</p>
+<p><strong>提示3</strong>：如果你对如何实现这个解释器毫无头绪，<strong>可以通过搜索“Python实现LISP解释器”获得一些信息</strong>。不过建议你尽量不要这么做。</p>
+<p><strong>注意事项</strong>：在Scheme中，<code>布尔值</code>被表示为<code>#f</code>或<code>#t</code>，对应着Python中的False与True，例如<code>(&gt; 1 2)</code>对应的返回值就应该是<code>#f</code>。</p>
+<p><strong>注意事项2</strong>：在Scheme中，可以使用<code>;</code>表示注释的开头，以换行作为结尾。例如<code>(expt 2 8) ; 256</code>，这后面的<code>; 256</code>会被自动忽略。你可以考虑实现这一特性，也可以选择不实现。</p>
+<p><strong>注意事项3</strong>：如果你仍感觉实现这些功能比较困难，可以考虑只实现上面提到的一部分功能，例如只实现最简单的<code>(+ 1 2)</code>，变量定义<code>(define x 1)</code>等。</p>
+<h2 id="进阶"><a class="markdownIt-Anchor" href="#进阶"></a> 进阶</h2>
+<p>如果你在实现完这个简单的Scheme解释器后仍有余力，可以考虑实现一些更高级的语法，例如添加对<code>字符串</code>和<code>浮点数</code>的支持、<code>lambda语句块</code>、<code>列表(list)</code>、<code>局部变量(let)</code>甚至<code>闭包</code>。你可以在w3cschool上找到一个<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/yast_cn/ciw3kozt.html">完整的Scheme教程(Yet Another Scheme)</a>，并考虑实现这里提到的部分特性。当然，你也可以自己查找其他资料学习Scheme。</p>
+<p>这里并不给出一个具体需要实现哪些语法的列表，你可以自由发挥。推荐你先尝试实现列表（cons及list），以及在列表上使用的一些常用函数（car/cdr/filter/map/reduce/for-each等），由于Python本身对这些函数有支持，并且Python的list与Scheme中的list很相似，因此你只需要在之前的代码基础上做一些小小的改进就可以实现。或者你也可以先实现lambda语句块，它本质上不过是另一种更通用的变量定义方式，应当也是很容易实现的。你也可以优先考虑实现let/throw/quote这些简单的语法，这应当也比较轻松。至于实现字符串可能稍微有些困难，这需要运用一些数据结构的思想，例如栈和树，不过你也可以通过简单的循环判断实现。</p>
+<p>另外，非常推荐你首先选择实现Scheme内置的<code>(display x)</code>函数，它负责在命令行（终端）中直接打印x的值，很类似于Python中的<code>print</code>函数。这样就可以非常方便地调试Scheme代码了。</p>
+<p>你甚至可以考虑实现一些自己的独特想法，甚至是不包含在Scheme语法规范里的语法。例如，你可以实现一个<code>(print-to-file &lt;string&gt; &lt;filepath&gt;)</code>函数，将字符串<code>&lt;string&gt;</code>的值输出到文件。你也可以将一些函数内置，例如上面提到的<code>(square x)</code>函数，使其不需定义就可以直接使用。你可以充分发挥创造力，打造属于自己的LISP方言。</p>
+<p>例如，在LISP的另一门方言Clojure中，实现了宏定义<code>(-&gt;&gt; ...)</code>，它可以像下面这样使用：</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">-&gt;&gt;</span></span> <span class="number">1</span></span><br><span class="line">     (<span class="name"><span class="built_in">+</span></span> <span class="number">1</span>)</span><br><span class="line">     (<span class="name"><span class="built_in">*</span></span> <span class="number">2</span>)</span><br><span class="line">     (<span class="name"><span class="built_in">-</span></span> <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p>上面这段代码的值是<code>-6</code>，正好就是<code>((1 + 1) * 2) - 10</code>的结果。在Clojure中，这被称为<code>thread-last</code>宏，它将典型的LISP书写顺序颠倒了过来，重整为更自然的从左到右的阅读顺序，很符合人类的习惯，也更加清晰。</p>
+<p>假设你已经实现了list、字符串、lambda块等高级特性，利用上面提到的&quot;-&gt;&gt;&quot;，就可以编写更有意思的代码：</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="built_in">define</span></span> (<span class="name">process-string</span> Alist)</span><br><span class="line">  (<span class="name">-&gt;&gt;</span> Alist</span><br><span class="line">       (<span class="name">filter</span> (<span class="name"><span class="built_in">lambda</span></span> (x) (<span class="name"><span class="built_in">&gt;</span></span> (<span class="name"><span class="built_in">string-length</span></span> x) <span class="number">1</span>)))</span><br><span class="line">       (<span class="name"><span class="built_in">map</span></span> capitalize)</span><br><span class="line">       (<span class="name">interpose</span> <span class="string">&quot;,&quot;</span>)</span><br><span class="line">       (<span class="name">reduce</span> str)))</span><br><span class="line">(<span class="name"><span class="built_in">define</span></span> list-of-employees (<span class="name"><span class="built_in">list</span></span> <span class="string">&quot;neal&quot;</span> <span class="string">&quot;s&quot;</span> <span class="string">&quot;stu&quot;</span> <span class="string">&quot;j&quot;</span> <span class="string">&quot;rich&quot;</span> <span class="string">&quot;bob&quot;</span> <span class="string">&quot;aiden&quot;</span>))</span><br><span class="line">(<span class="name">process-string</span> list-of-employees)</span><br><span class="line"><span class="comment">; 下面一步一步地演示了list-of-employees的转换过程</span></span><br><span class="line"><span class="comment">; (&quot;neal&quot; &quot;s&quot; &quot;stu&quot; &quot;j&quot; &quot;rich&quot; &quot;bob&quot; &quot;aiden&quot;)</span></span><br><span class="line"><span class="comment">; (&quot;neal&quot; &quot;stu&quot; &quot;rich&quot; &quot;bob&quot; &quot;aiden&quot;)</span></span><br><span class="line"><span class="comment">; (&quot;Neal&quot; &quot;Stu&quot; &quot;Rich&quot; &quot;Bob&quot; &quot;Aiden&quot;)</span></span><br><span class="line"><span class="comment">; (&quot;Neal&quot; &quot;,&quot; &quot;Stu&quot; &quot;,&quot; &quot;Rich&quot; &quot;,&quot; &quot;Bob&quot; &quot;,&quot; &quot;Aiden&quot;)</span></span><br><span class="line"><span class="comment">; &quot;Neal, Stu, Rich, Bob, Aiden&quot;</span></span><br></pre></td></tr></table></figure>
+<p>上面先不讨论filter、map、capitalize、interpose、reduce、str这几个内置函数是怎么实现的，只着眼于代码本身。上面这段代码演示了处理如何处理一个包含公司雇员姓名的列表：先去除所有只有一个字母的错误数据，再对每个雇员的姓名应用<code>capitalize</code>，即将其首字母大写，然后用<code>interpose</code>在两两单词之间插入<code>,</code>作为分隔符，然后通过<code>reduce</code>累加地调用<code>str</code>函数将这些单词组合起来。</p>
+<p>上面代码中演示的解决问题的方式被称为<strong>函数式编程思想</strong>，而LISP就是一种典型的函数式编程语言。函数式编程不关心复杂的数据结构与类继承关系，而是创造一系列通用的函数，将复杂的问题转换为最基本的几个数据结构，然后利用这些通用的函数求解问题，而不是制造更多的数据结构。函数式编程将函数当作”一等公民“，函数也可以被当作变量，可以直接作为参数传入，这被称为<code>高阶函数</code>，例如上面代码中的&quot;filter&quot;就接收了一个lambda函数作为参数。在函数式编程中，很常用的三个操作列表的函数是<code>filter(筛选)</code>、<code>map(映射)</code>、<code>reduce(折叠/化约)</code>，Python中也有这三个函数，你可以了解一下，并考虑在你的Scheme解释器上实现它们（不过你显然需要先实现list）。此外，函数式编程还有不变性、减少副作用等概念，你若感兴趣可以自行了解。</p>
+<p>不过，要让你的Scheme解释器支持运行上面提到的代码可能并不容易。这个例子仅仅是展示了LISP的无限可能：即使<code>-&gt;&gt;</code>并不是Scheme的标准语法，你仍可以轻松地实现这个功能（相较于其他语言来说），这意味着你可以充分发挥你的想象力，创造属于自己的LISP方言。</p>
+<p>当然了，<strong>这一部分不作强制要求</strong>，仅仅作为加分项<strong>（满分40分，作为附加分）</strong>。<strong>如果你实现了基本功能之外的功能，需要在附带的文档中指出你实现了哪些Scheme高阶特性，又有哪些是你独创的语法，并给出示例代码和运行结果。此外，你还需要给出附有适当注释的解释器源代码。</strong></p>
+<p>为了不束缚想象力，这一部分较为开放，<em>并不包括详细的评分标准</em>。但你可以在下面的推荐里挑选几个实现。当然，你可以实现的功能远不仅限于这个范围。<strong>我们会根据你具体的实现情况以及创新点决定你的40分附加分</strong>：</p>
+<ul>
+<li>实现字符串以及浮点数</li>
+<li>实现局部变量（let）</li>
+<li>实现高阶函数</li>
+<li>实现列表（list和cons）及相关函数（filter/map/reduce/for-each等）</li>
+<li>实现内置的哈希表</li>
+<li>实现文件输入/输出API</li>
+<li>实现引用语法（'）</li>
+<li>实现向量（vector）</li>
+<li>实现一些独特的内置宏定义（例如上面演示的<code>thread-last</code>宏）</li>
+<li>实现一些有趣的独创语法</li>
+<li>其他创新点</li>
+</ul>
+<p>再次强调，相比于100%还原Scheme语法，我们更希望能够看到一些闪光的创新点。我们的目的并不是复刻一门语言，而是实现一个有趣的解释器。因此，我们会考虑对创新特性进行更多加分，即使是实现起来非常容易的创新点。</p>
+<blockquote>
+<p>注：如果你对此很感兴趣，希望深入学习Scheme，可以在这次活动结束后阅读《计算机程序的构造与解释（SICP）》，这本书从原理入手，通过Scheme解释了编程语言的原理，很有趣但也很需要一定的思维量。不过在这次活动中就不推荐你阅读了，这本书需要很长的时间才能搞明白，而且应当对你在本次活动中的解题过程没什么帮助。</p>
+</blockquote>
+<h2 id="挑战"><a class="markdownIt-Anchor" href="#挑战"></a> 挑战</h2>
+<p><strong>注意</strong>：这一部分仅仅作为“挑战”，即使你完成了这些挑战，给出了很完善的实现，也只能获得<strong>很少的加分（满分10分）</strong>。建议优先考虑完善上面的基本题目与“进阶”部分。</p>
+<p>如果你在完成进阶任务后仍有余力，可以考虑完成这里的一部分“挑战”。完成这些挑战有助于将你的Scheme解释器变成一个真正具有实用价值的解释器，可以真正方便地运行各种代码，并且具有简单的调试功能。</p>
+<p>以下是挑战列表。当然，如果你不满足于这些挑战，也可以自己完成想做的挑战：</p>
+<ul>
+<li>实现一个简单的REPL（交互式运行环境），就像Python自带的IDLE一样。实现这一功能可能远比你想象的简单许多，甚至只需要十数行代码</li>
+<li>输出更好的报错信息，当代码出现语法错误时猜测可能是哪里出了问题</li>
+<li>实现尾递归优化</li>
+<li>实现垃圾回收（你可以考虑最简单的引用计数法，当然也可以挑战自己选择使用更复杂的算法实现）</li>
+<li>考虑完全不使用eval实现解释器。注意：较难</li>
+<li>为LISP添加面向对象支持，例如加入class关键字。如果你对如何添加类似Java/Python中传统的面向对象支持没有头绪，可以考虑实现JavaScript中的原型链继承。一个更简单的主意是先考虑实现C语言中的结构体（struct）。注意：这可能非常困难！尝试完成这一挑战时请务必谨慎</li>
+</ul>
+<p>值得注意的是，“挑战”与“进阶”的区别在于“进阶”仅限于语法层面，而“挑战”部分的内容范围更广，并且不集中于语法层面，且难度大得多。例如你在语法之外实现了解释器速度上的优化，那么这些工作就算在“挑战”中。“挑战”的加分很少（仅10分），因此推荐你不优先考虑解释器的效率问题。</p>
+<p><strong>如果你尝试着完成了这些挑战的一部分，可以将你通过Scheme实现解释器的心路历程、实现了哪些语法、又实现了哪些自创语法、示例代码和运行结果写在文档里，并给出解释器的源代码。<strong>再次强调，这一部分仅仅是一个“挑战”，即使你给出了很完善的实现，也只会有</strong>很少的加分</strong>，仅建议你在有余力的情况下考虑挑战这个任务。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sumsc-caa.github.io/2022/04/28/Pandora-22-5-q1/" title="魔盒挑战 2022.5 简单LISP解释器" target="_blank" rel="external">https://sumsc-caa.github.io/2022/04/28/Pandora-22-5-q1/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="//github.com/sumsc-caa" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/img/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="//github.com/sumsc-caa" target="_blank"><span class="text-dark">苏州大学计算机爱好者协会（微软学生俱乐部）</span><small class="ml-1x">微软开源学习社群联络社团</small></a></h3>
+        <div>计算机爱好者协会是苏州大学计算机科学与技术学院的学术性社团，为2015年与微软亚洲研究院联合成立的苏州大学微软学生俱乐部，现为微软开源学习社群的联络社团。欢迎加入俱乐部QQ群：497516494 | 关注微信公众号：SUMSTC</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/04/28/Pandora-22-5-q2/" title="魔盒挑战 2022.5 失物招领登记与查询系统"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/12/03/pandora-2021-1-maze-solution/" title="2021 魔盒挑战第一期-网页迷宫篇 解题流程与说明"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 SUMSC
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
