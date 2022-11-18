@@ -5488,30 +5488,7 @@ pre .constant {
   color: #f5871f;
 }
 
-pre .ruby .class .title,
-pre .css .rules .attribute {
-  color: #718c00;
-}
-
-pre .string,
-pre .value,
-pre .inheritance,
-pre .header,
-pre .ruby .symbol,
-pre .xml .cdata {
-  color: #718c00;
-}
-
-pre .title,
-pre .css .hexcolor {
-  color: #3e999f;
-}
-
-pre .function,
-pre .python .decorator,
-pre .python .title,
-pre .ruby .function .title,
-pre .ruby .title .keyword,
+pre .ruby .class .title,.keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .js .title,
@@ -9228,4 +9205,8 @@ screen and (max-height: 479px) {
   .navbar-fixed-bottom .navbar-collapse {
     max-height: 200px;
   }
+}
+
+.katex-html {
+  display: none;
 }

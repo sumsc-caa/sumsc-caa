@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>技术赋能#2：Python可迭代对象的相关函数（1） | SUMSC</title>
+  <meta name="description" content="Python内置了许多有用的工具函数与类，用于处理可迭代对象与迭代器产生的数据流。本文将对这些工具函数或类作简要介绍，包括map，filter，enumerate，zip，sum，all&#x2F;any，min&#x2F;max，sorted。 本文是本系列的上一篇文章“技术赋能#1：Python的可迭代对象、迭代器与生成器”的延续，建议先了解这一篇再继续阅读。  map函数 map是Python中常用的一个函数（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术赋能#2：Python可迭代对象的相关函数（1）">
+<meta property="og:url" content="https://sumsc-caa.github.io/2022/11/18/techpost-2022-2/index.html">
+<meta property="og:site_name" content="SUMSC">
+<meta property="og:description" content="Python内置了许多有用的工具函数与类，用于处理可迭代对象与迭代器产生的数据流。本文将对这些工具函数或类作简要介绍，包括map，filter，enumerate，zip，sum，all&#x2F;any，min&#x2F;max，sorted。 本文是本系列的上一篇文章“技术赋能#1：Python的可迭代对象、迭代器与生成器”的延续，建议先了解这一篇再继续阅读。  map函数 map是Python中常用的一个函数（">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-18T00:23:48.000Z">
+<meta property="article:modified_time" content="2022-11-18T15:04:52.199Z">
+<meta property="article:author" content="SUMSC">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sumsc-caa.github.io/2022/11/18/techpost-2022-2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="SUMSC" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="//github.com/sumsc-caa" target="_blank">
+          <img class="img-circle img-rotate" src="/img/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">苏州大学计算机爱好者协会（微软学生俱乐部）</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">微软开源学习社群联络社团</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Suzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-blog">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">
+            
+            <span class="menu-title">技术博客</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-activity">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8">
+            
+            <span class="menu-title">活动</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-github">
+          <a target="_blank" rel="noopener" href="//github.com/sumsc-caa">
+            
+            <span class="menu-title">GitHub</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <span class="menu-title">友情链接</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <span class="menu-title">关于我们</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <div><p>这里是苏州大学计算机爱好者协会（微软学生俱乐部），在这里，你可以看到关于我们的信息以及我们最近的动态。</p><p>欢迎交流与分享经验!</p></div><hr/> <div style="line-height:30px;"> <!-- <h4>🔥 最新活动</h4><div> <div style="line-height:26px;"><p>号外号外！苏州大学计算机爱好者协会<a href="/2022/06/05/hackathon2022-online/" target="_blank">2022“Hackathon：Online”</a>来啦！ <em><a href="https://mp.weixin.qq.com/s/YI0Bjhai6vb4BMhXu6cGUg" target="_blank">活动推送传送门</a></em> <p>本次Hackathon的形式不同以往，将以线上的方式进行。本次活动将在6月5日~6月12日展开，历时7天，给予各位同学更充足的时间和更灵活的安排来呈现出一个创意满满的作品！</p> </p><p>本次Hackathon以“聊天机器人”为主题，在6月5日将由主持人为大家介绍本次Hackathon的题目，并进行相关技术的教学。比赛期间也会有相关技术成员在群内为大家答疑解惑。在比赛进程的最后一天，将由各小组成员展示自己的精彩作品，还有丰富奖品等你来拿！ </p><p>还在犹豫什么？快加入QQ群488140447，在头脑风暴中挑战自我吧！<p></div><hr/> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a><span class="category-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hackathon/" style="font-size: 13.67px;">Hackathon</a> <a href="/tags/Pandora/" style="font-size: 13.33px;">Pandora</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13px;">前端</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/18/techpost-2022-2/" class="title">技术赋能#2：Python可迭代对象的相关函数（1）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-18T00:23:48.000Z" itemprop="datePublished">2022-11-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-2/" class="title">2022 Hackathon: 字符画与康威生命游戏</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-asciiart/" class="title">2022 Hackathon: 字符画 示例程序与帮助</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:02.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-gameoflife/" class="title">2022 Hackathon: 康威生命游戏 示例程序与使用说明</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:01.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/18/techpost-2022-1/" class="title">技术赋能#1：python的可迭代对象、迭代器与生成器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-18T04:23:48.000Z" itemprop="datePublished">2022-10-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-techpost-2022-2" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      技术赋能#2：Python可迭代对象的相关函数（1）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/11/18/techpost-2022-2/" class="article-date">
+	  <time datetime="2022-11-18T00:23:48.000Z" itemprop="datePublished">2022-11-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Python/" rel="tag">Python</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/11/18/techpost-2022-2/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 9(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>Python内置了许多有用的工具函数与类，用于处理可迭代对象与迭代器产生的数据流。本文将对这些工具函数或类作简要介绍，包括<code>map</code>，<code>filter</code>，<code>enumerate</code>，<code>zip</code>，<code>sum</code>，<code>all</code>/<code>any</code>，<code>min</code>/<code>max</code>，<code>sorted</code>。</p>
+<p><em>本文是本系列的上一篇文章“技术赋能#1：Python的可迭代对象、迭代器与生成器”的延续，建议先了解这一篇再继续阅读。</em></p>
+<h3 id="map函数"><a class="markdownIt-Anchor" href="#map函数"></a> <code>map</code>函数</h3>
+<p><code>map</code>是Python中常用的一个函数（类），它接受一个函数与一个或多个可迭代对象作为输入，并输出一个迭代器（<code>map</code>实例）。</p>
+<p>例如，当我们需要得到一个数列的平方时，我们可以使用<code>map</code>函数这样编写代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">square</span>(<span class="params">x</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> x**<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m = <span class="built_in">map</span>(square, <span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> m:</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(i, end=<span class="string">&quot; &quot;</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">4</span> <span class="number">9</span> <span class="number">16</span> <span class="number">25</span> <span class="number">36</span> <span class="number">49</span> <span class="number">64</span> <span class="number">81</span></span><br></pre></td></tr></table></figure>
+<p>这样写有点繁琐了，为了简化下文的代码，本文将使用Python提供的“lambda表达式（匿名函数）”与“序列解包”两个语法。上面的代码等价于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, <span class="built_in">range</span>(<span class="number">10</span>)))</span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">4</span> <span class="number">9</span> <span class="number">16</span> <span class="number">25</span> <span class="number">36</span> <span class="number">49</span> <span class="number">64</span> <span class="number">81</span></span><br></pre></td></tr></table></figure>
+<p>上面提到的两种语法如果你没学到也没关系，你只需要知道<code>lambda x: x**2</code>和前面的<code>square</code>函数的定义相同，<code>print</code>和<code>*</code>+可迭代对象可以代替上面的那个循环。</p>
+<p>如果设输入<code>map</code>的第一个参数为函数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>，第二个参数为数列<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>a</mi><mi>n</mi></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">\langle a_1, a_2, \ldots, a_n\rangle</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span>，则这个<code>map</code>调用的输出为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>a</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>a</mi><mi>n</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">\langle f(a_1), f(a_2), \ldots, f(a_n)\rangle</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">⟩</span></span></span></span>。在上面的例子中，数列<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><msub><mi>a</mi><mi>i</mi></msub><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{a_i\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span>为 0-9 的自然数列，函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">f(x)=x^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> ，因此输出是 0-9 内各个自然数的平方。</p>
+<p>当然，在Python中<code>map</code>接受的序列（可迭代对象）当然不止数列，字符串与字符串序列也是可以的，下面这个例子将列表与字符串中的小写字母全部转化成大写字母（字符串也是可迭代对象哦）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">map</span>(<span class="keyword">lambda</span> s:s.upper(), [<span class="string">&quot;Alpha&quot;</span>, <span class="string">&quot;Beta&quot;</span>, <span class="string">&quot;Gamma&quot;</span>]))</span><br><span class="line">ALPHA BETA GAMMA</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">map</span>(<span class="keyword">lambda</span> s:s.upper(), <span class="string">&quot;Alpha&quot;</span>))</span><br><span class="line">A L P H A</span><br></pre></td></tr></table></figure>
+<p>此外，输入和输出不一定要保持相同的数据类型，这一段代码可以将输入的字符串形式的数字转化为整型变量的序列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">map</span>(<span class="built_in">int</span>, <span class="string">&quot;1,1,2,3,5,8,13,21&quot;</span>.split(<span class="string">&quot;,&quot;</span>)))</span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">5</span> <span class="number">8</span> <span class="number">13</span> <span class="number">21</span></span><br></pre></td></tr></table></figure>
+<p>上文提到，<code>map</code>也可以接受多个可迭代对象作为输入，此时函数<code>f</code>的参数数量需要与可迭代对象的数量相同，当多个输入序列长度不一样时，输出序列的长度与较短的序列的相同。这个例子使用<code>map</code>函数将两个序列对应位置的数相乘：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">map</span>(<span class="keyword">lambda</span> x,y: x*y, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>], [<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]))</span><br><span class="line"><span class="number">6</span> <span class="number">14</span> <span class="number">24</span> <span class="number">36</span> <span class="number">50</span></span><br></pre></td></tr></table></figure>
+<h3 id="filter函数"><a class="markdownIt-Anchor" href="#filter函数"></a> <code>filter</code>函数</h3>
+<p><code>filter</code>的参数形式与<code>map</code>相似，其接受一个函数<code>f</code>与<strong>一个</strong>可迭代对象作为输入，输出一个迭代器（<code>filter</code>实例）。其中输入函数<code>f</code>的返回值必须是布尔类型（<code>True/False</code>）或是能隐式转换为布尔类型，函数值为<code>True</code>的值将留在输出序列中，为<code>False</code>的值将被筛去。下面两个例子分别筛选出了输入序列中的偶数与素数（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>的暴力算法，考试时不要使用哦）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">filter</span>(<span class="keyword">lambda</span> n:n%<span class="number">2</span>==<span class="number">0</span>, <span class="built_in">range</span>(<span class="number">20</span>)))</span><br><span class="line"><span class="number">0</span> <span class="number">2</span> <span class="number">4</span> <span class="number">6</span> <span class="number">8</span> <span class="number">10</span> <span class="number">12</span> <span class="number">14</span> <span class="number">16</span> <span class="number">18</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">filter</span>(<span class="keyword">lambda</span> n: n==<span class="number">2</span> <span class="keyword">or</span> n&gt;<span class="number">2</span> <span class="keyword">and</span> <span class="built_in">all</span>(n%i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>,<span class="built_in">int</span>(n**<span class="number">0.5</span>)+<span class="number">1</span>)), <span class="built_in">range</span>(<span class="number">100</span>)))</span><br><span class="line"><span class="number">2</span> <span class="number">3</span> <span class="number">5</span> <span class="number">7</span> <span class="number">11</span> <span class="number">13</span> <span class="number">17</span> <span class="number">19</span> <span class="number">23</span> <span class="number">29</span> <span class="number">31</span> <span class="number">37</span> <span class="number">41</span> <span class="number">43</span> <span class="number">47</span> <span class="number">53</span> <span class="number">59</span> <span class="number">61</span> <span class="number">67</span> <span class="number">71</span> <span class="number">73</span> <span class="number">79</span> <span class="number">83</span> <span class="number">89</span> <span class="number">97</span></span><br></pre></td></tr></table></figure>
+<h3 id="enumerate函数"><a class="markdownIt-Anchor" href="#enumerate函数"></a> <code>enumerate</code>函数</h3>
+<p><code>enumerate</code>函数也是Python中很常用的一个函数，它接受一个可迭代对象和一个可选参数<code>start</code>作为输入，返回值是元组的可迭代对象，每个元组的第二项为原序列的内容，第一项为这一项在序列中的编号。在Python中它常常伴随<code>for</code>循环出现，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst = [<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;pear&quot;</span>, <span class="string">&quot;peach&quot;</span>, <span class="string">&quot;banana&quot;</span>, <span class="string">&quot;grape&quot;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i, name <span class="keyword">in</span> <span class="built_in">enumerate</span>(lst):</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(i, name)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">0</span> apple</span><br><span class="line"><span class="number">1</span> pear</span><br><span class="line"><span class="number">2</span> peach</span><br><span class="line"><span class="number">3</span> banana</span><br><span class="line"><span class="number">4</span> grape</span><br></pre></td></tr></table></figure>
+<p>可选参数<code>start</code>制定了初始的计数值，默认为0：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i, name <span class="keyword">in</span> <span class="built_in">enumerate</span>(lst, start=<span class="number">5</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(i, name)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">5</span> apple</span><br><span class="line"><span class="number">6</span> pear</span><br><span class="line"><span class="number">7</span> peach</span><br><span class="line"><span class="number">8</span> banana</span><br><span class="line"><span class="number">9</span> grape</span><br></pre></td></tr></table></figure>
+<h3 id="zip函数"><a class="markdownIt-Anchor" href="#zip函数"></a> <code>zip</code>函数</h3>
+<p><code>zip</code>函数用于对多个可迭代对象进行打包，对于输入序列<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>a</mi><mi>n</mi></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">\langle a_1,a_2,\ldots,a_n\rangle</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span>与<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><msub><mi>b</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>b</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>b</mi><mi>n</mi></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>b</mi><mrow><mi>n</mi><mo>+</mo><mi>t</mi></mrow></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">\langle b_1,b_2,\ldots,b_n,\ldots,b_{n+t}\rangle</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.28055599999999997em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span><span class="mbin mtight">+</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.208331em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span>，<code>zip</code>函数将对应位置的值打包成元组返回，并丢弃多余的值，即返回<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mo stretchy="false">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>b</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mtext> </mtext><mo stretchy="false">(</mo><msub><mi>a</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>b</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mtext> </mtext><mo>…</mo><mo separator="true">,</mo><mtext> </mtext><mo stretchy="false">(</mo><msub><mi>a</mi><mi>n</mi></msub><mo separator="true">,</mo><msub><mi>b</mi><mi>n</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">\langle (a_1,b_1),~(a_2,b_2),~\ldots,~(a_n,b_n)\rangle</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace nobreak"> </span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace nobreak"> </span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace nobreak"> </span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">⟩</span></span></span></span></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*<span class="built_in">zip</span>(<span class="built_in">range</span>(<span class="number">0</span>,<span class="number">10</span>,<span class="number">2</span>), <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">13</span>,<span class="number">2</span>)))</span><br><span class="line">(<span class="number">0</span>, <span class="number">1</span>) (<span class="number">2</span>, <span class="number">3</span>) (<span class="number">4</span>, <span class="number">5</span>) (<span class="number">6</span>, <span class="number">7</span>) (<span class="number">8</span>, <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="sum函数"><a class="markdownIt-Anchor" href="#sum函数"></a> <code>sum</code>函数</h3>
+<p>顾名思义，<code>sum</code>函数对输入的可迭代对象求和，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">sum</span>(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">101</span>))</span><br><span class="line"><span class="number">5050</span></span><br></pre></td></tr></table></figure>
+<h3 id="allany函数"><a class="markdownIt-Anchor" href="#allany函数"></a> <code>all</code>/<code>any</code>函数</h3>
+<p><code>all</code>/<code>any</code>函数都接受一个可迭代对象作为输入，要求这个可迭代对象内的值可以被隐式转化为布尔值，返回值为单个布尔值。<code>all</code>函数在逻辑上与多项的<code>and</code>（与逻辑）相同，当且仅当可迭代对象内的所有值都为<code>True</code>或相当于<code>True</code>时返回<code>True</code>，否则返回<code>False</code>。<code>any</code>函数则在逻辑上与<code>or</code>（或逻辑）相同，当可迭代对象内存在<code>True</code>时就返回<code>True</code>，否则（全为<code>False</code>时）返回<code>False</code>。</p>
+<p>与Python的逻辑表达式（布尔表达式）相同，<code>all</code>与<code>any</code>函数也都是短路求值的，也就是说它们会在发现条件不满足时立刻返回（对于<code>all</code>来说就是第一次遇到<code>False</code>的时候），而不是过完整个序列。下面的这段代码演示了这一特性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>r = <span class="built_in">iter</span>([<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>,-<span class="number">1</span>,-<span class="number">2</span>,-<span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">all</span>(r) <span class="comment"># 消耗 5,4,3,2,1,0 遇到0时直接返回False</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*r) <span class="comment"># 获取剩余值</span></span><br><span class="line">-<span class="number">1</span> -<span class="number">2</span> -<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>此外，当输入序列为空时，<code>all</code>将返回<code>True</code>，<code>any</code>则返回<code>False</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">all</span>([])</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">any</span>([])</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h3 id="minmax函数"><a class="markdownIt-Anchor" href="#minmax函数"></a> <code>min</code>/<code>max</code>函数</h3>
+<p>这两个函数都用于求序列中的极值，<code>min</code>返回最小值而<code>max</code>返回最大值。除了可迭代对象之外，它们还会接受可选参数<code>key</code>，<code>key</code>参数是一个函数，用法类似于下文的<code>sorted</code>的<code>key</code>参数，这里仅演示用法，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">min</span>(<span class="built_in">map</span>(<span class="built_in">abs</span>, <span class="built_in">range</span>(-<span class="number">15</span>,<span class="number">11</span>)))</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">max</span>(<span class="built_in">map</span>(<span class="built_in">abs</span>, <span class="built_in">range</span>(-<span class="number">15</span>,<span class="number">11</span>)))</span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">max</span>(<span class="built_in">range</span>(-<span class="number">15</span>,<span class="number">11</span>), key=<span class="built_in">abs</span>)</span><br><span class="line">-<span class="number">15</span></span><br></pre></td></tr></table></figure>
+<h3 id="sorted函数"><a class="markdownIt-Anchor" href="#sorted函数"></a> <code>sorted</code>函数</h3>
+<p><code>sorted</code>函数对输入序列非原地排序，其返回值一定是一个排好序的<strong>列表</strong>，除了可迭代对象之外，它还接受<code>reverse</code>与<code>key</code>两个参数。<code>reverse</code>参数指定是否逆序排序，这个很好理解；而<code>key</code>参数接受的是一个函数，这个函数接受输入序列中的值作为输入，返回一个有序对象（例如数值、字符串等），<code>sorted</code>函数将以返回的有序对象作为排序的标准。</p>
+<p>在下面的示例中，第一个<code>sorted</code>调用对<code>lst</code>顺序排序，第二个对其逆序排序，第三个以每个值的绝对值作为标准进行排序（绝对值小的排在前面），第四个以 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><mn>2.2</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">f(x)=(x-2.2)^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord">.</span><span class="mord">2</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 为标准排序。需要分组排序时，可以让<code>key</code>参数接受的函数返回一个元组，例如第五个<code>sorted</code>调用，先按照每个数除以3的余数分组，然后对每一组按值的大小逆序排序。</p>
+<p>Python采用的Timsort算法是稳定排序算法，也就是说标准值相同的对象会按照它们在原序列中的顺序排序（相对位置保持不变），例如第三个示例中<code>-3</code>与<code>3</code>的绝对值相同，但是原序列中<code>-3</code>在前面，所以输出的列表中<code>-3</code>也在<code>3</code>的前面。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst = [<span class="number">1</span>,-<span class="number">3</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">4</span>,-<span class="number">1</span>,-<span class="number">2</span>,-<span class="number">4</span>,<span class="number">3</span>,<span class="number">0</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">sorted</span>(lst)                               <span class="comment">#1</span></span><br><span class="line">[-<span class="number">4</span>, -<span class="number">3</span>, -<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">sorted</span>(lst, reverse=<span class="literal">True</span>)                 <span class="comment">#2</span></span><br><span class="line">[<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, -<span class="number">2</span>, -<span class="number">3</span>, -<span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">sorted</span>(lst, key=<span class="built_in">abs</span>)                      <span class="comment">#3</span></span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>, <span class="number">2</span>, -<span class="number">2</span>, -<span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, -<span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">sorted</span>(lst, key=<span class="keyword">lambda</span> x:(x-<span class="number">2.2</span>)**<span class="number">2</span>)      <span class="comment">#4</span></span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">0</span>, <span class="number">5</span>, -<span class="number">1</span>, -<span class="number">2</span>, -<span class="number">3</span>, -<span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">sorted</span>(<span class="built_in">range</span>(<span class="number">15</span>), key=<span class="keyword">lambda</span> x:(x%<span class="number">3</span>, -x)) <span class="comment">#5</span></span><br><span class="line">[<span class="number">12</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">10</span>, <span class="number">7</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">14</span>, <span class="number">11</span>, <span class="number">8</span>, <span class="number">5</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>本文介绍了Python内置的一些与可迭代对象有关的函数以及它们的使用方法，在本系列的下一篇文章内我们将介绍Python标准库中的<code>itertools</code>库，它提供了更多与可迭代对象有关的功能，敬请期待！</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sumsc-caa.github.io/2022/11/18/techpost-2022-2/" title="技术赋能#2：Python可迭代对象的相关函数（1）" target="_blank" rel="external">https://sumsc-caa.github.io/2022/11/18/techpost-2022-2/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="//github.com/sumsc-caa" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/img/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="//github.com/sumsc-caa" target="_blank"><span class="text-dark">苏州大学计算机爱好者协会（微软学生俱乐部）</span><small class="ml-1x">微软开源学习社群联络社团</small></a></h3>
+        <div>计算机爱好者协会是苏州大学计算机科学与技术学院的学术性社团，为2015年与微软亚洲研究院联合成立的苏州大学微软学生俱乐部，现为微软开源学习社群的联络社团。欢迎加入俱乐部QQ群：497516494 | 关注微信公众号：SUMSTC</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2022/11/04/hackathon2022-2/" title="2022 Hackathon: 字符画与康威生命游戏"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2022 SUMSC
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
