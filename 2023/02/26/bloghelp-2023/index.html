@@ -18,15 +18,15 @@
   
   
   <title>博客帮助文档（更新） | SUMSC</title>
-  <meta name="description" content="本站的博客系统基于 Hexo.js框架，因为在对应的Github仓库中已经设置好了Github Actions，所以无需在本地安装Hexo即可发布博客。以下为具体步骤：  使用说明  注册Github帐号； 加入Github SUMSC组织 sumsc-caa（请联系技术组组长）； 拉取仓库（需要事先在Github设置好ssh公钥）： 1$ git clone git@github.com:sum">
+  <meta name="description" content="本站的博客系统基于 Hexo.js框架，因为在对应的Github仓库中已经设置好了Github Actions，所以不在本地安装Hexo也可以发布博客。以下为具体步骤：  使用说明  注册Github帐号； 加入Github SUMSC组织 sumsc-caa（请联系技术组组长）； 拉取仓库（需要事先在Github设置好ssh公钥）： 1$ git clone git@github.com:sum">
 <meta property="og:type" content="article">
 <meta property="og:title" content="博客帮助文档（更新）">
 <meta property="og:url" content="https://sumsc-caa.github.io/2023/02/26/bloghelp-2023/index.html">
 <meta property="og:site_name" content="SUMSC">
-<meta property="og:description" content="本站的博客系统基于 Hexo.js框架，因为在对应的Github仓库中已经设置好了Github Actions，所以无需在本地安装Hexo即可发布博客。以下为具体步骤：  使用说明  注册Github帐号； 加入Github SUMSC组织 sumsc-caa（请联系技术组组长）； 拉取仓库（需要事先在Github设置好ssh公钥）： 1$ git clone git@github.com:sum">
+<meta property="og:description" content="本站的博客系统基于 Hexo.js框架，因为在对应的Github仓库中已经设置好了Github Actions，所以不在本地安装Hexo也可以发布博客。以下为具体步骤：  使用说明  注册Github帐号； 加入Github SUMSC组织 sumsc-caa（请联系技术组组长）； 拉取仓库（需要事先在Github设置好ssh公钥）： 1$ git clone git@github.com:sum">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-26T11:30:05.000Z">
-<meta property="article:modified_time" content="2023-02-26T05:22:51.987Z">
+<meta property="article:modified_time" content="2023-02-26T05:39:47.346Z">
 <meta property="article:author" content="SUMSC">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
@@ -346,7 +346,7 @@
         <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/02/26/bloghelp-2023/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 696(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 719(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
@@ -356,7 +356,7 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>本站的博客系统基于 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo">Hexo.js框架</a>，因为在对应的Github仓库中已经设置好了Github Actions，所以无需在本地安装Hexo即可发布博客。以下为具体步骤：</p>
+        <p>本站的博客系统基于 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo">Hexo.js框架</a>，因为在对应的Github仓库中已经设置好了Github Actions，所以不在本地安装Hexo也可以发布博客。以下为具体步骤：</p>
 <h2 id="使用说明"><a class="markdownIt-Anchor" href="#使用说明"></a> 使用说明</h2>
 <ol start="0">
 <li>注册Github帐号；</li>
@@ -382,12 +382,13 @@
 <li>上传至国内的免费图床，例如<a href="https://sumsc-caa.github.io/2020/10/23/hackathon2020/">这篇文章</a>。</li>
 </ol>
 <p>非图像文件请放在 <code>source/assets</code> 内，发布后对应的URL为<code>/assets/&lt;filename&gt;</code>，例如<a href="https://sumsc-caa.github.io/2021/11/05/hackathon2021-q2-tetris/">这篇文章</a>。</p>
+<p>此外，如果是代码文件，也可以考虑使用 <a target="_blank" rel="noopener" href="https://gist.github.com/">Github Gist</a>，例如<a href="https://sumsc-caa.github.io/2022/11/04/hackathon2022-gameoflife/">这篇文章</a>。</p>
 <h2 id="关于实时预览"><a class="markdownIt-Anchor" href="#关于实时预览"></a> 关于实时预览</h2>
-<p>使用实时本地预览需要在本地安装好Hexo及其运行环境，这首先需要在本地配置好<a target="_blank" rel="noopener" href="https://nodejs.org/">node.js</a>，这一步请参考网上的教程。装好node.js后，在本仓库的目录下执行（或者使用你常用的包管理工具）</p>
+<p>使用实时本地预览需要在本地安装好Hexo及其运行环境，这首先需要在本地配置好<a target="_blank" rel="noopener" href="https://nodejs.org/">node.js</a>，这一步请参考网络上的教程。装好node.js后，在本仓库的目录下执行（或者用你常用的包管理工具）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm i</span><br></pre></td></tr></table></figure>
 <p>安装本项目的依赖（包括hexo）。然后使用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ npm server</span><br><span class="line"># 或者</span><br><span class="line">$ hexo server</span><br><span class="line"># 或者</span><br><span class="line">$ npx hexo server</span><br></pre></td></tr></table></figure>
-<p>启动预览服务器，默认的预览地址为 <a target="_blank" rel="noopener" href="http://localhost:4000">http://localhost:4000</a> 。作出更改后保存，并在浏览器内刷新对应的页面即可看到更改后的结果。预览的效果与实际部署后的效果是完全一致的。</p>
+<p>启动预览服务器，默认的预览地址为 <a target="_blank" rel="noopener" href="http://localhost:4000">http://localhost:4000</a> 。作出更改后保存，并在浏览器内刷新对应的页面即可看到更改后的结果。预览的效果与实际部署的效果是完全一致的。</p>
 
       
     </div>
