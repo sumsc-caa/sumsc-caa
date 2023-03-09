@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>技术赋能#3：Python可迭代对象的相关函数（2） | SUMSC</title>
+  <meta name="description" content="除了上一篇文章介绍的Python的内置函数，Python还在其标准库itertools中提供了许多用于处理迭代器的便利函数。本文将介绍其中几个函数，关于完整列表及其使用方法请参见 Python 官方文档 - itertools。 因为itertools是Python标准库的一部分，因此无需额外的操作，直接import即可引入该包（这里为了便于演示导入了itertools内的所有变量*，但是在程序中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术赋能#3：Python可迭代对象的相关函数（2）">
+<meta property="og:url" content="https://sumsc-caa.github.io/2023/03/09/techpost-2022-3/index.html">
+<meta property="og:site_name" content="SUMSC">
+<meta property="og:description" content="除了上一篇文章介绍的Python的内置函数，Python还在其标准库itertools中提供了许多用于处理迭代器的便利函数。本文将介绍其中几个函数，关于完整列表及其使用方法请参见 Python 官方文档 - itertools。 因为itertools是Python标准库的一部分，因此无需额外的操作，直接import即可引入该包（这里为了便于演示导入了itertools内的所有变量*，但是在程序中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-09T10:49:41.000Z">
+<meta property="article:modified_time" content="2023-03-09T17:07:40.017Z">
+<meta property="article:author" content="SUMSC">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://sumsc-caa.github.io/2023/03/09/techpost-2022-3/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="SUMSC" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="//github.com/sumsc-caa" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">苏州大学计算机爱好者协会（微软学生俱乐部）</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">微软开源学习社群联络社团</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Suzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-blog">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2">
+            
+            <span class="menu-title">技术博客</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-activity">
+          <a href="/categories/%E6%B4%BB%E5%8A%A8">
+            
+            <span class="menu-title">活动</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-github">
+          <a target="_blank" rel="noopener" href="//github.com/sumsc-caa">
+            
+            <span class="menu-title">GitHub</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <span class="menu-title">友情链接</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <span class="menu-title">关于我们</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <div><p>这里是苏州大学计算机爱好者协会（微软学生俱乐部），在这里，你可以看到关于我们的信息以及我们最近的动态。</p><p>欢迎交流与分享经验!</p></div><hr/> <div style="line-height:30px;"> <!-- <h4>🔥 最新活动</h4><div> <div style="line-height:26px;"><p>号外号外！苏州大学计算机爱好者协会<a href="/2022/06/05/hackathon2022-online/" target="_blank">2022“Hackathon：Online”</a>来啦！ <em><a href="https://mp.weixin.qq.com/s/YI0Bjhai6vb4BMhXu6cGUg" target="_blank">活动推送传送门</a></em> <p>本次Hackathon的形式不同以往，将以线上的方式进行。本次活动将在6月5日~6月12日展开，历时7天，给予各位同学更充足的时间和更灵活的安排来呈现出一个创意满满的作品！</p> </p><p>本次Hackathon以“聊天机器人”为主题，在6月5日将由主持人为大家介绍本次Hackathon的题目，并进行相关技术的教学。比赛期间也会有相关技术成员在群内为大家答疑解惑。在比赛进程的最后一天，将由各小组成员展示自己的精彩作品，还有丰富奖品等你来拿！ </p><p>还在犹豫什么？快加入QQ群488140447，在头脑风暴中挑战自我吧！<p></div><hr/> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a><span class="category-list-count">15</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Hackathon/" style="font-size: 13.67px;">Hackathon</a> <a href="/tags/Pandora/" style="font-size: 13.33px;">Pandora</a> <a href="/tags/Python/" style="font-size: 14px;">Python</a> <a href="/tags/%E5%89%8D%E7%AB%AF/" style="font-size: 13px;">前端</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/03/09/techpost-2022-3/" class="title">技术赋能#3：Python可迭代对象的相关函数（2）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-03-09T10:49:41.000Z" itemprop="datePublished">2023-03-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/02/26/bloghelp-2023/" class="title">博客帮助文档（更新）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-02-26T03:30:05.000Z" itemprop="datePublished">2023-02-26</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/18/techpost-2022-2/" class="title">技术赋能#2：Python可迭代对象的相关函数（1）</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-18T00:23:48.000Z" itemprop="datePublished">2022-11-18</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-2/" class="title">2022 Hackathon: 字符画与康威生命游戏</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:03.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E6%B4%BB%E5%8A%A8/">活动</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/04/hackathon2022-asciiart/" class="title">2022 Hackathon: 字符画 示例程序与帮助</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-04T10:30:02.000Z" itemprop="datePublished">2022-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-techpost/techpost-2022-3" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      技术赋能#3：Python可迭代对象的相关函数（2）
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/03/09/techpost-2022-3/" class="article-date">
+	  <time datetime="2023-03-09T10:49:41.000Z" itemprop="datePublished">2023-03-09</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">技术博客</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Python/" rel="tag">Python</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/03/09/techpost-2022-3/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 4(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>除了<a href="/2022/11/18/techpost-2022-2">上一篇文章</a>介绍的Python的内置函数，Python还在其标准库itertools中提供了许多用于处理迭代器的便利函数。本文将介绍其中几个函数，关于完整列表及其使用方法请参见 <a target="_blank" rel="noopener" href="https://docs.Python.org/zh-cn/3/library/itertools.html">Python 官方文档 - itertools</a>。</p>
+<p>因为itertools是Python标准库的一部分，因此无需额外的操作，直接import即可引入该包（这里为了便于演示导入了itertools内的所有变量<code>*</code>，但是在程序中不建议这样做）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> itertools <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+<h3 id="accumulate-函数"><a class="markdownIt-Anchor" href="#accumulate-函数"></a> accumulate 函数</h3>
+<p>accumulate 函数会对逐个累加输入的迭代器的数据，其返回值也是一个迭代器，每步返回当前元素与之前所有元素的累加和。此外，可以通过func和initial参数指定累加使用的函数与初始值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*accumulate(<span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>))) <span class="comment"># 累加</span></span><br><span class="line"><span class="number">1</span> <span class="number">3</span> <span class="number">6</span> <span class="number">10</span> <span class="number">15</span> <span class="number">21</span> <span class="number">28</span> <span class="number">36</span> <span class="number">45</span> <span class="number">55</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> operator</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*accumulate(<span class="built_in">range</span>(<span class="number">1</span>, <span class="number">11</span>), func = operator.mul, initial = <span class="number">1</span>)) <span class="comment"># 累乘</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span> <span class="number">6</span> <span class="number">24</span> <span class="number">120</span> <span class="number">720</span> <span class="number">5040</span> <span class="number">40320</span> <span class="number">362880</span> <span class="number">3628800</span>  <span class="comment"># 注意这里会首先返回initial的值</span></span><br></pre></td></tr></table></figure>
+<h3 id="chain-函数"><a class="markdownIt-Anchor" href="#chain-函数"></a> chain 函数</h3>
+<p>顾名思义，chain函数可以将多个可迭代对象像锁链一样串在一起：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*chain(<span class="built_in">range</span>(<span class="number">5</span>), <span class="string">&quot;abcde&quot;</span>, [<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">9</span>]))</span><br><span class="line"><span class="number">0</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> a b c d e <span class="number">1</span> <span class="number">3</span> <span class="number">5</span> <span class="number">7</span> <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<h3 id="pairwise-函数"><a class="markdownIt-Anchor" href="#pairwise-函数"></a> pairwise 函数</h3>
+<p>pairwise会将可迭代对象每一步的返回值与其前一步的值组成一个元组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*pairwise(<span class="built_in">range</span>(<span class="number">7</span>)))</span><br><span class="line">(<span class="number">0</span>, <span class="number">1</span>) (<span class="number">1</span>, <span class="number">2</span>) (<span class="number">2</span>, <span class="number">3</span>) (<span class="number">3</span>, <span class="number">4</span>) (<span class="number">4</span>, <span class="number">5</span>) (<span class="number">5</span>, <span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+<p>例如我们在编程时会遇到求列表中相邻元素之差的情况，比较朴素的实现如下（不考虑边界条件）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">delta1</span>(<span class="params">lst</span>):</span><br><span class="line">    delta = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(lst)-<span class="number">1</span>):</span><br><span class="line">        delta.append(lst[i+<span class="number">1</span>]-lst[i])</span><br><span class="line">    <span class="keyword">return</span> delta</span><br></pre></td></tr></table></figure>
+<p>使用zip函数可以写成如下形式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">delta2</span>(<span class="params">lst</span>):</span><br><span class="line">    <span class="keyword">return</span> [j-i <span class="keyword">for</span> i,j <span class="keyword">in</span> <span class="built_in">zip</span>(lst, lst[<span class="number">1</span>:])]</span><br></pre></td></tr></table></figure>
+<p>当输入是一般的可迭代对象时（无法创建切片），则可以使用pairwise函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">delta3</span>(<span class="params">iterable</span>):</span><br><span class="line">    <span class="keyword">return</span> [j-i <span class="keyword">for</span> i,j <span class="keyword">in</span> pairwise(iterable)]</span><br></pre></td></tr></table></figure>
+<h3 id="product-函数"><a class="markdownIt-Anchor" href="#product-函数"></a> product 函数</h3>
+<p>product函数会返回两个或多个可迭代对象的笛卡尔积，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*product(<span class="built_in">range</span>(<span class="number">3</span>), <span class="built_in">range</span>(<span class="number">5</span>,<span class="number">7</span>)))</span><br><span class="line">(<span class="number">0</span>, <span class="number">5</span>) (<span class="number">0</span>, <span class="number">6</span>) (<span class="number">1</span>, <span class="number">5</span>) (<span class="number">1</span>, <span class="number">6</span>) (<span class="number">2</span>, <span class="number">5</span>) (<span class="number">2</span>, <span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+<p>例如下面这个三层循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="string">&quot;abcdefg&quot;</span>:</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="string">&quot;+-*/&quot;</span>:</span><br><span class="line">            value = (i, j, k)</span><br><span class="line">            <span class="string">&quot;&quot;&quot;do something with value&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>使用product函数就可以改写为这个形式，起到了压缩嵌套循环的效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> product(<span class="built_in">range</span>(<span class="number">10</span>), <span class="string">&quot;abcdefg&quot;</span>, <span class="string">&quot;+-*/&quot;</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;do something with value&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="permutations-函数"><a class="markdownIt-Anchor" href="#permutations-函数"></a> permutations 函数</h3>
+<p>该函数会返回输入集合的所有长度为r的排列，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*permutations([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], r=<span class="number">3</span>))</span><br><span class="line">(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) (<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>) (<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>) (<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>) (<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>) (<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>这比写三层循环简洁了许多。</p>
+<p>与其相似的还有 <code>combinations</code> 函数与 <code>combinations_with_replacement</code> 函数，分别为无放回的和有放回的组合函数。</p>
+<p>注：如果你只是想求排列数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mi>k</mi><mi>n</mi></msubsup></mrow><annotation encoding="application/x-tex">A^n_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9664379999999999em;vertical-align:-0.2831079999999999em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4168920000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831079999999999em;"><span></span></span></span></span></span></span></span></span></span> 或者组合数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>C</mi><mi>k</mi><mi>n</mi></msubsup></mrow><annotation encoding="application/x-tex">C^n_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9664379999999999em;vertical-align:-0.2831079999999999em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4168920000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2831079999999999em;"><span></span></span></span></span></span></span></span></span></span> ，使用上述三个函数加<code>len()</code>就有些没必要了（因为会浪费内存与计算时间）。对于这种情况，math 库提供了 <code>perm</code> 函数与 <code>comb</code> 函数，可以直接根据公式求值。</p>
+<h3 id="takewhile-与-dropwhile-函数"><a class="markdownIt-Anchor" href="#takewhile-与-dropwhile-函数"></a> takewhile 与 dropwhile 函数</h3>
+<p>takewhile函数会逐个返回输入的可迭代对象的值，直到测试条件为假，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*takewhile(<span class="keyword">lambda</span> x: x&lt;<span class="number">3</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]))</span><br><span class="line"><span class="number">1</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>这个函数可以理解为与<code>break</code>具有相同的功能，即提前结束循环，去除多余的计算步骤。</p>
+<p>类似的还有dropwhile函数，可以视为相反的takewhile，它会在测试条件首次为假时开始传递输入的可迭代对象的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(*dropwhile(<span class="keyword">lambda</span> x: x&lt;<span class="number">3</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]))</span><br><span class="line"><span class="number">3</span> <span class="number">2</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<hr />
+<p>本文介绍了Python的itertools标准库提供的七个函数，在下一篇技术博客中我们将介绍迭代器与Python函数式编程的关系，并给出一些Python函数式编程的实例。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://sumsc-caa.github.io/2023/03/09/techpost-2022-3/" title="技术赋能#3：Python可迭代对象的相关函数（2）" target="_blank" rel="external">https://sumsc-caa.github.io/2023/03/09/techpost-2022-3/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="//github.com/sumsc-caa" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="//github.com/sumsc-caa" target="_blank"><span class="text-dark">苏州大学计算机爱好者协会（微软学生俱乐部）</span><small class="ml-1x">微软开源学习社群联络社团</small></a></h3>
+        <div>计算机爱好者协会是苏州大学计算机科学与技术学院的学术性社团，为2015年与微软亚洲研究院联合成立的苏州大学微软学生俱乐部，现为微软开源学习社群的联络社团。欢迎加入俱乐部QQ群：497516494 | 关注微信公众号：SUMSTC</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/02/26/bloghelp-2023/" title="博客帮助文档（更新）"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="//github.com/sumsc-caa" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2023 SUMSC
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+
+
+
+
+</body>
+</html>
